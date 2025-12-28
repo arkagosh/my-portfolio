@@ -12,7 +12,7 @@
     <style>
         body { background-color: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .syne { font-family: 'Syne', sans-serif; }
-        
+
         /* High-End Gradient */
         .gradient-text { background: linear-gradient(90deg, #ff00cc, #3333ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-btn { background: linear-gradient(90deg, #ff00cc, #3333ff); transition: 0.5s; }
@@ -30,6 +30,27 @@
         /* Star Animation */
         .star-btn { transition: 0.3s; cursor: pointer; color: #333; }
         .star-btn.active { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
+
+        /* Responsive & Mobile Fixes */
+        @media (max-width: 768px) {
+            nav div.hidden.md\\:flex { display: none; } /* hide desktop menu on mobile */
+            .hero-text { font-size: 5rem !important; } /* smaller hero text */
+            .hero-sub { font-size: 0.8rem !important; } /* smaller subtitle */
+            #about { flex-direction: column; gap: 8rem; padding: 5rem 1rem; }
+            #work .grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        /* Form Hover Animation (Mobile + Desktop) */
+        form input, form textarea {
+            transform: scale(1);
+            transition: transform 0.3s ease;
+        }
+        form input:hover, form textarea:hover {
+            transform: scale(1.03);
+        }
+
+        /* Liquid Plus Video Fullscreen Smooth */
+        video { min-height: 100%; min-width: 100%; object-fit: cover; }
     </style>
 </head>
 <body>
@@ -162,3 +183,4 @@
     </script>
 </body>
 </html>
+
