@@ -2,74 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Oridra Gosh | Creative Designer & Developer</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
-        * { scroll-behavior: smooth; }
+        * { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
         body { background-color: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .syne { font-family: 'Syne', sans-serif; }
         
+        /* Optimized Gradients */
         .gradient-text { background: linear-gradient(90deg, #ff00cc, #3333ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .gradient-btn { background: linear-gradient(90deg, #ff00cc, #3333ff); transition: 0.5s; }
-        .gradient-btn:hover { box-shadow: 0 0 20px rgba(255, 0, 204, 0.6); transform: scale(1.02); }
+        .gradient-btn { background: linear-gradient(90deg, #ff00cc, #3333ff); }
 
-        /* Full-screen Mobile Menu Animation */
-        #mobile-overlay { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.77,0.2,0.05,1.0); visibility: hidden; }
+        /* Smooth Mobile Menu */
+        #mobile-overlay { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); visibility: hidden; }
         #mobile-overlay.open { transform: translateX(0); visibility: visible; }
 
-        .work-card { border: 1px solid rgba(255,255,255,0.05); transition: 0.4s; }
-        .star { cursor: pointer; color: #333; transition: 0.3s; font-size: 1.2rem; }
-        .star.active { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
+        /* Hardware Acceleration for Mobile */
+        .hero-title, .hero-sub { will-change: transform, opacity; }
+        
+        .work-card { border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s ease; }
+        .star { cursor: pointer; color: #333; transition: 0.2s; font-size: 1.5rem; }
+        .star.active { color: #ffd700; text-shadow: 0 0 8px #ffd700; }
     </style>
 </head>
 <body>
 
-    <nav class="fixed top-0 w-full z-50 py-4 px-6 md:px-12 flex justify-between items-center bg-black/80 backdrop-blur-xl border-b border-white/10">
+    <nav class="fixed top-0 w-full z-50 py-4 px-6 flex justify-between items-center bg-black/80 backdrop-blur-lg border-b border-white/10">
         <div class="text-xl font-extrabold syne tracking-tighter uppercase">ORIDRA<span class="text-pink-500">.</span></div>
-        
-        <div class="hidden md:flex space-x-10 text-[11px] font-bold tracking-[0.2em] uppercase">
-            <a href="#home" class="hover:text-pink-500 transition">HOME</a>
-            <a href="#about" class="hover:text-pink-500 transition">ABOUT</a>
-            <a href="#work" class="hover:text-pink-500 transition">WORK</a>
-            <a href="#contact" class="text-pink-500">CONTACT</a>
-        </div>
-
-        <button onclick="toggleMenu()" class="md:hidden text-2xl p-2 focus:outline-none">☰</button>
+        <button onclick="toggleMenu()" class="text-2xl p-2 focus:outline-none">☰</button>
     </nav>
 
-    <div id="mobile-overlay" class="fixed inset-0 bg-black z-[100] flex flex-col items-center justify-center space-y-8 text-2xl font-bold syne md:hidden">
-        <button onclick="toggleMenu()" class="absolute top-6 right-8 text-4xl font-light">✕</button>
+    <div id="mobile-overlay" class="fixed inset-0 bg-black z-[100] flex flex-col items-center justify-center space-y-8 text-3xl font-bold syne">
+        <button onclick="toggleMenu()" class="absolute top-6 right-8 text-5xl font-light">✕</button>
         <a href="#home" onclick="toggleMenu()">HOME</a>
         <a href="#about" onclick="toggleMenu()">ABOUT ME</a>
         <a href="#work" onclick="toggleMenu()">MY WORK</a>
         <a href="#contact" onclick="toggleMenu()" class="gradient-text">CONTACT ME</a>
     </div>
 
-    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden px-6 bg-zinc-950">
-        <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-30">
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden px-6 bg-[#050505]">
+        <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none">
             <source src="https://assets.mixkit.co/videos/preview/mixkit-liquid-gradient-under-a-microscope-41315-large.mp4" type="video/mp4">
         </video>
+        
         <div class="relative z-10 text-center">
-            <h1 class="hero-title text-5xl md:text-9xl font-extrabold syne uppercase leading-none opacity-0">Creative<br><span class="gradient-text">Oridra</span></h1>
-            <p class="hero-sub text-gray-400 mt-6 tracking-[0.2em] md:tracking-[0.6em] text-[10px] md:text-xs uppercase opacity-0">Graphic Designer & Developer</p>
+            <h1 class="hero-title text-5xl md:text-9xl font-extrabold syne uppercase leading-none opacity-0">
+                Creative<br><span class="gradient-text">Oridra</span>
+            </h1>
+            <p class="hero-sub text-gray-400 mt-6 tracking-[0.2em] md:tracking-[0.6em] text-[10px] md:text-xs uppercase opacity-0">
+                Graphic Designer & Developer
+            </p>
         </div>
     </section>
 
-    <section id="about" class="py-20 px-6 max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16">
+    <section id="about" class="py-20 px-6 max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
         <div class="md:w-1/2">
             <h2 class="text-4xl md:text-6xl font-extrabold syne mb-6 leading-tight">Art Meets <br><span class="gradient-text">Code.</span></h2>
-            <p class="text-gray-400 text-base md:text-lg leading-relaxed">
-                Oridra Gosh – A passionate Graphic Designer and skilled Developer. I craft visually stunning designs and functional digital solutions that combine aesthetics with high performance.
+            <p class="text-gray-300 text-base md:text-lg leading-relaxed">
+                Oridra Gosh – A passionate Graphic Designer and skilled Developer. I combine creativity and technical expertise to craft visually stunning, high-performance digital solutions.
             </p>
         </div>
         <div class="md:w-1/2 w-full">
             <div class="relative rounded-3xl overflow-hidden p-[1px] gradient-btn">
-                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800" class="rounded-[23px] w-full grayscale hover:grayscale-0 transition duration-700 object-cover" alt="Oridra Gosh">
+                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800" class="rounded-[23px] w-full grayscale object-cover" alt="Oridra Gosh">
             </div>
         </div>
     </section>
@@ -79,16 +79,18 @@
             <h2 class="text-4xl md:text-6xl font-extrabold syne mb-12 text-center">Featured <span class="gradient-text">Work</span></h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="work-card bg-zinc-900/50 rounded-3xl overflow-hidden p-4">
-                    <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800" class="w-full h-56 md:h-80 object-cover rounded-2xl mb-4">
-                    <h3 class="text-xl font-bold syne uppercase px-2 mb-4 tracking-tighter">Minimalist Branding</h3>
-                    <div class="flex items-center justify-between border-t border-white/5 pt-4 px-2">
-                        <button onclick="handleLike(this)" class="text-lg flex items-center gap-2">❤️ <span>128</span></button>
-                        <div class="flex space-x-1">
-                            <span onclick="handleRate(this)" class="star">★</span>
-                            <span onclick="handleRate(this)" class="star">★</span>
-                            <span onclick="handleRate(this)" class="star">★</span>
-                            <span onclick="handleRate(this)" class="star">★</span>
-                            <span onclick="handleRate(this)" class="star">★</span>
+                    <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800" class="w-full h-64 object-cover rounded-2xl mb-6">
+                    <div class="px-2">
+                        <h3 class="text-xl font-bold syne mb-4 uppercase">Visual Brand Identity</h3>
+                        <div class="flex items-center justify-between border-t border-white/5 pt-4">
+                            <button onclick="handleLike(this)" class="text-lg flex items-center gap-2">❤️ <span>128</span></button>
+                            <div class="flex space-x-1">
+                                <span onclick="handleRate(this)" class="star">★</span>
+                                <span onclick="handleRate(this)" class="star">★</span>
+                                <span onclick="handleRate(this)" class="star">★</span>
+                                <span onclick="handleRate(this)" class="star">★</span>
+                                <span onclick="handleRate(this)" class="star">★</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -98,54 +100,56 @@
 
     <section id="contact" class="py-20 px-6 text-center">
         <h2 class="text-4xl md:text-6xl font-extrabold syne mb-10">Get In <span class="gradient-text">Touch.</span></h2>
-        <div class="max-w-xl mx-auto bg-zinc-900/30 p-6 md:p-10 rounded-[32px] border border-white/5">
+        <div class="max-w-xl mx-auto bg-zinc-900/30 p-6 md:p-12 rounded-[32px] border border-white/5">
             <form action="https://formspree.io/f/xvzoblwp" method="POST" class="space-y-4 text-left">
-                <input type="text" name="name" required placeholder="Full Name" 
-                    class="w-full bg-black/50 border border-white/10 p-4 rounded-xl focus:border-pink-500 outline-none text-sm transition">
-                <input type="email" name="email" required placeholder="Email Address" 
-                    class="w-full bg-black/50 border border-white/10 p-4 rounded-xl focus:border-pink-500 outline-none text-sm transition">
-                <textarea name="message" required rows="4" placeholder="Your Message" 
-                    class="w-full bg-black/50 border border-white/10 p-4 rounded-xl focus:border-pink-500 outline-none text-sm transition"></textarea>
-                <button type="submit" class="w-full gradient-btn py-4 rounded-xl font-bold text-xs syne uppercase tracking-[0.2em] active:scale-95 transition">
-                    Send Inquiry
-                </button>
+                <input type="text" name="name" required placeholder="Full Name" class="w-full bg-black/50 border border-white/10 p-4 rounded-xl focus:border-pink-500 outline-none text-sm">
+                <input type="email" name="email" required placeholder="Email Address" class="w-full bg-black/50 border border-white/10 p-4 rounded-xl focus:border-pink-500 outline-none text-sm">
+                <textarea name="message" required rows="4" placeholder="Your Message" class="w-full bg-black/50 border border-white/10 p-4 rounded-xl focus:border-pink-500 outline-none text-sm"></textarea>
+                <button type="submit" class="w-full gradient-btn py-4 rounded-xl font-bold text-xs syne uppercase tracking-widest active:scale-95 transition-transform">Send Message</button>
             </form>
         </div>
     </section>
 
-    <footer class="py-12 text-center border-t border-white/5">
-        <div class="flex flex-wrap justify-center gap-6 md:gap-12 mb-8 text-[10px] font-bold tracking-[0.2em]">
+    <footer class="py-12 text-center border-t border-white/5 bg-black">
+        <div class="flex flex-wrap justify-center gap-8 mb-8 text-[10px] font-bold tracking-widest">
             <a href="https://www.facebook.com/oridra.gosh" target="_blank" class="hover:text-pink-500 transition">FACEBOOK</a>
             <a href="https://www.instagram.com/oridra_gosh/" target="_blank" class="hover:text-pink-500 transition">INSTAGRAM</a>
             <a href="https://t.me/oridra_gosh" target="_blank" class="hover:text-pink-500 transition">TELEGRAM</a>
         </div>
-        <p class="text-gray-600 text-[10px] uppercase">© 2025 Oridra Gosh | Designed & Developed by Oridra</p>
+        <p class="text-gray-600 text-[10px]">© 2025 ORIDRA GOSH</p>
     </footer>
 
     <script>
-        // Ensure animations run even on slow mobile networks
-        window.onload = () => {
-            gsap.to(".hero-title", { opacity: 1, y: -20, duration: 1, ease: "power4.out" });
-            gsap.to(".hero-sub", { opacity: 1, duration: 1, delay: 0.5 });
-        };
+        // Use DOMContentLoaded so animation starts before video finishes loading
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.to(".hero-title", { 
+                opacity: 1, 
+                y: -20, 
+                duration: 1, 
+                ease: "power4.out",
+                delay: 0.2 
+            });
+            gsap.to(".hero-sub", { 
+                opacity: 1, 
+                duration: 1, 
+                delay: 0.7 
+            });
+        });
 
-        // Mobile Menu Function
         function toggleMenu() {
             document.getElementById('mobile-overlay').classList.toggle('open');
         }
 
-        // Like Counter
         function handleLike(btn) {
-            let count = btn.querySelector('span');
+            const count = btn.querySelector('span');
             count.innerText = parseInt(count.innerText) + 1;
+            gsap.from(btn, { scale: 1.3, duration: 0.2 });
             btn.classList.add('text-pink-500');
-            gsap.from(btn, { scale: 1.2, duration: 0.2 });
         }
 
-        // Star Rating
         function handleRate(star) {
-            let stars = Array.from(star.parentElement.children);
-            let idx = stars.indexOf(star);
+            const stars = Array.from(star.parentElement.children);
+            const idx = stars.indexOf(star);
             stars.forEach((s, i) => s.classList.toggle('active', i <= idx));
         }
     </script>
