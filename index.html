@@ -18,36 +18,76 @@
         body { background-color: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .syne { font-family: 'Syne', sans-serif; }
 
-        /* Liquid Background */
-        .mesh-container { position: absolute; inset: 0; background: #050505; overflow: hidden; z-index: 0; filter: blur(60px) contrast(120%); }
-        .liquid-orb { position: absolute; border-radius: 50%; mix-blend-mode: screen; opacity: 0.5; will-change: transform; animation: move-liquid 25s infinite alternate ease-in-out; }
-        .orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, #ff00cc 0%, transparent 70%); top: -10%; left: 10%; }
-        .orb-2 { width: 800px; height: 800px; background: radial-gradient(circle, #3333ff 0%, transparent 70%); bottom: -15%; right: 10%; animation-duration: 35s; }
-        @keyframes move-liquid { 0% { transform: translate(0, 0); } 100% { transform: translate(15%, 15%); } }
+        .mesh-container {
+            position: absolute;
+            inset: 0;
+            background: #050505;
+            overflow: hidden;
+            z-index: 0;
+            filter: blur(60px) contrast(120%);
+        }
 
-        /* Pop-up Modal Styling */
-        #commentModal { display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); align-items: center; justify-content: center; opacity: 0; }
-        .modal-content { background: #111; border: 1px solid rgba(255,255,255,0.1); padding: 2rem; border-radius: 24px; width: 90%; max-width: 500px; transform: scale(0.9); }
+        .liquid-orb {
+            position: absolute;
+            border-radius: 50%;
+            mix-blend-mode: screen;
+            opacity: 0.5;
+            will-change: transform;
+            animation: move-liquid 25s infinite alternate ease-in-out;
+        }
+
+        .orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, #ff00cc 0%, transparent 70%); top: -10%; left: 10%; }
+        .orb-2 { width: 800px; height: 800px; background: radial-gradient(circle, #3333ff 0%, transparent 70%); bottom: -15%; right: 10%; animation-duration: 35s; animation-delay: -5s; }
+        .orb-3 { width: 500px; height: 500px; background: radial-gradient(circle, #00f2ff 0%, transparent 70%); top: 30%; left: 35%; animation-duration: 20s; opacity: 0.3; }
+
+        @keyframes move-liquid {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            100% { transform: translate(15%, 15%) scale(1.1) rotate(180deg); }
+        }
 
         .gradient-text { background: linear-gradient(90deg, #ff00cc, #3333ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-btn { background: linear-gradient(90deg, #ff00cc, #3333ff); transition: 0.5s; }
+        .gradient-btn:hover { box-shadow: 0 0 20px rgba(255, 0, 204, 0.6); transform: scale(1.05); color: white; }
+
+        .nav-link { position: relative; padding-bottom: 4px; overflow: hidden; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: #ff00cc; transform: translateX(-101%); transition: transform 0.3s ease; }
         .nav-link:hover::after { transform: translateX(0); }
+
         .work-card { transform: translateY(50px); opacity: 0; transition: all 0.6s ease-out; }
         .work-card.show { transform: translateY(0); opacity: 1; }
+
+        .star-btn { transition: 0.3s; cursor: pointer; color: #333; }
+        .star-btn.active { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
+
+        /* Comment Modal Styles */
+        #commentModal { display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); align-items: center; justify-content: center; }
+        .modal-content { background: #111; border: 1px solid rgba(255,255,255,0.1); padding: 2rem; border-radius: 24px; width: 90%; max-width: 500px; }
+        
         nav { background: rgba(5, 5, 5, 0.7) !important; backdrop-filter: blur(15px); }
+
+        /* --- NEW FORM FIELD ANIMATION STYLES --- */
+        .form-field-anim {
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease !important;
+            will-change: transform;
+        }
+        .form-field-anim:hover {
+            border-color: rgba(255, 0, 204, 0.3);
+            box-shadow: 0 10px 40px -15px rgba(255, 0, 204, 0.2);
+            background: #0d0d0d !important;
+        }
     </style>
 </head>
 <body>
 
-    <div id="commentModal" onclick="closeComments(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h2 class="syne text-3xl mb-4">Leave a <span class="gradient-text">Comment</span></h2>
-            <form id="commentForm" action="https://formspree.io/f/xvzoblwp" method="POST" class="space-y-4">
-                <input type="text" name="name" placeholder="Your Name" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl outline-none focus:border-pink-500">
-                <textarea name="comment" placeholder="What do you think?" rows="4" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl outline-none focus:border-pink-500"></textarea>
-                <button type="submit" class="w-full gradient-btn py-4 rounded-xl font-bold uppercase tracking-widest">Post Comment</button>
-            </form>
-            <button onclick="closeComments()" class="mt-4 text-gray-500 text-sm hover:text-white transition">Close Window</button>
+    <div id="commentModal">
+        <div class="modal-content">
+            <h3 class="syne text-2xl mb-4">Leave a <span class="gradient-text">Comment</span></h3>
+            <input type="text" id="commenterName" placeholder="Your Name" class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl mb-4 outline-none focus:border-pink-500">
+            <textarea id="commentText" placeholder="Write something..." rows="4" class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl mb-4 outline-none focus:border-pink-500"></textarea>
+            <div class="flex gap-4">
+                <button onclick="submitComment()" class="flex-1 gradient-btn py-3 rounded-xl font-bold uppercase tracking-wider">Post</button>
+                <button onclick="closeComments()" class="flex-1 bg-zinc-800 py-3 rounded-xl font-bold uppercase tracking-wider">Cancel</button>
+            </div>
         </div>
     </div>
 
@@ -59,17 +99,34 @@
             <a href="#work" class="nav-link">MY WORK</a>
             <a href="#contact" class="nav-link text-pink-500">CONTACT ME</a>
         </div>
-        <a href="#contact" class="gradient-btn px-6 py-2 rounded-full text-xs font-bold text-white">LET'S TALK</a>
+        <div class="flex items-center space-x-5">
+            <a href="#contact" class="gradient-btn px-6 py-2 rounded-full text-xs font-bold text-white uppercase tracking-wider">Let's Talk</a>
+        </div>
     </nav>
 
     <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
         <div class="mesh-container">
             <div class="liquid-orb orb-1"></div>
             <div class="liquid-orb orb-2"></div>
+            <div class="liquid-orb orb-3"></div>
         </div>
         <div class="relative z-10 text-center">
-            <h1 class="hero-text text-7xl md:text-9xl font-extrabold syne uppercase leading-none opacity-0">Creative<br><span class="gradient-text">Oridra</span></h1>
+            <h1 class="hero-text text-7xl md:text-9xl font-extrabold syne uppercase leading-none opacity-0">
+                Creative<br><span class="gradient-text">Oridra</span>
+            </h1>
             <p class="hero-sub text-gray-400 mt-6 tracking-[0.5em] text-sm opacity-0 uppercase">Graphic Designer & Web Developer</p>
+        </div>
+    </section>
+
+    <section id="about" class="py-32 px-10 max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+        <div class="md:w-1/2">
+            <h2 class="text-5xl font-extrabold syne mb-8">Creative <span class="gradient-text">Mind.</span></h2>
+            <p class="text-gray-300 text-xl leading-relaxed">
+                Oridra Gosh – A passionate Graphic Designer and skilled Developer. I bring creativity and technical expertise together to craft visually stunning designs and functional digital solutions. 
+            </p>
+        </div>
+        <div class="md:w-1/2 border border-white/10 p-4 rounded-3xl bg-zinc-900/50">
+            <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800" class="rounded-2xl grayscale hover:grayscale-0 transition duration-1000 w-full" alt="Design">
         </div>
     </section>
 
@@ -78,19 +135,24 @@
             <h2 class="text-5xl font-extrabold syne mb-16 text-center">Featured <span class="gradient-text">Work</span></h2>
             <div class="grid md:grid-cols-2 gap-12">
                 <div class="work-card bg-zinc-900 rounded-3xl overflow-hidden border border-white/5">
-                    <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800" class="w-full h-72 object-cover">
+                    <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800" class="w-full h-72 object-cover hover:scale-105 transition duration-700">
                     <div class="p-8">
                         <h3 class="text-2xl font-bold syne mb-6">Minimalist Branding</h3>
                         <div class="flex items-center justify-between border-t border-white/10 pt-6">
                             <div class="flex space-x-6">
-                                <button onclick="handleLike(this)" class="group flex items-center space-x-2 text-xl transition">
-                                    <span class="group-active:scale-150 transition">❤️</span>
-                                    <span class="like-count text-sm text-gray-400">0</span>
+                                <button onclick="handleLike(this)" class="text-xl hover:text-pink-500 transition flex items-center gap-2">
+                                    <span class="heart-icon">🤍</span> <span id="like-count" class="text-sm">0</span>
                                 </button>
-                                <button onclick="openComments()" class="flex items-center space-x-2 text-xl hover:text-blue-500 transition">
-                                    <span>💬</span>
-                                    <span class="comment-count text-sm text-gray-400">0</span>
+                                <button onclick="openComments()" class="text-xl hover:text-blue-500 transition flex items-center gap-2">
+                                    💬 <span id="comment-count" class="text-sm">0</span>
                                 </button>
+                            </div>
+                            <div class="flex text-2xl">
+                                <span onclick="animateRate(this)" class="star-btn px-1">★</span>
+                                <span onclick="animateRate(this)" class="star-btn px-1">★</span>
+                                <span onclick="animateRate(this)" class="star-btn px-1">★</span>
+                                <span onclick="animateRate(this)" class="star-btn px-1">★</span>
+                                <span onclick="animateRate(this)" class="star-btn px-1">★</span>
                             </div>
                         </div>
                     </div>
@@ -99,48 +161,161 @@
         </div>
     </section>
 
-    <script>
-        // 1. Like Logic (Local Simulation - Reset on Refresh unless connected to Firebase)
-        let likes = 0;
-        let comments = 0;
+    <section id="admin-panel" class="py-20 px-10 bg-zinc-950 border-t border-white/5">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="syne text-3xl mb-10 text-pink-500">Admin <span class="text-white">Inbox (Comments)</span></h2>
+            <div id="admin-comments-list" class="space-y-4">
+                <p class="text-gray-500 italic">No comments yet...</p>
+            </div>
+        </div>
+    </section>
 
-        function handleLike(btn) {
-            likes++;
-            btn.querySelector('.like-count').innerText = likes;
-            btn.classList.add('text-pink-500');
-            gsap.fromTo(btn.querySelector('span'), {scale: 0.8}, {scale: 1.4, duration: 0.2, yoyo: true, repeat: 1});
+    <section id="contact" class="py-32 px-10 text-center bg-black">
+        <h2 class="text-6xl font-extrabold syne mb-12">Get In <span class="gradient-text">Touch.</span></h2>
+        <form action="https://formspree.io/f/xvzoblwp" method="POST" class="max-w-2xl mx-auto space-y-6">
+           <input type="text" name="name" placeholder="Full Name" required class="form-field-anim w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition text-white">
+           <input type="email" name="email" placeholder="Email Address" required class="form-field-anim w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition text-white">
+           <textarea name="message" placeholder="Tell me about your project..." rows="5" required class="form-field-anim w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition text-white"></textarea>
+           <button class="w-full gradient-btn py-5 rounded-2xl font-bold text-lg syne uppercase tracking-widest text-white">Send Inquiry</button>
+        </form>
+    </section>
+
+    <script>
+        // --- LOGIC FOR LIKES & COMMENTS ---
+        let likes = 0;
+        let liked = false;
+        let comments = JSON.parse(localStorage.getItem('portfolio_comments')) || [];
+
+        function updateUI() {
+            document.getElementById('like-count').innerText = likes;
+            document.getElementById('comment-count').innerText = comments.length;
+            renderAdminComments();
         }
 
-        // 2. Pop-up Logic
+        // Like Logic: 1 tap like, 2 tap unlike
+        function handleLike(el) {
+            const icon = el.querySelector('.heart-icon');
+            if (!liked) {
+                likes++;
+                liked = true;
+                icon.innerText = "❤️";
+                gsap.fromTo(el, { scale: 0.8 }, { scale: 1.5, duration: 0.2, yoyo: true, repeat: 1 });
+            } else {
+                likes--;
+                liked = false;
+                icon.innerText = "🤍";
+            }
+            updateUI();
+        }
+
+        // Comment Logic
         function openComments() {
-            const modal = document.getElementById('commentModal');
-            modal.style.display = 'flex';
-            gsap.to(modal, {opacity: 1, duration: 0.4});
-            gsap.to(".modal-content", {scale: 1, duration: 0.4, ease: "back.out"});
+            gsap.to("#commentModal", { display: 'flex', opacity: 1, duration: 0.4 });
         }
 
         function closeComments() {
-            const modal = document.getElementById('commentModal');
-            gsap.to(modal, {opacity: 0, duration: 0.3, onComplete: () => modal.style.display = 'none'});
-            gsap.to(".modal-content", {scale: 0.9, duration: 0.3});
+            gsap.to("#commentModal", { opacity: 0, duration: 0.3, onComplete: () => {
+                document.getElementById('commentModal').style.display = 'none';
+            }});
         }
 
-        // Increase comment count when form is submitted
-        document.getElementById('commentForm').addEventListener('submit', () => {
-            comments++;
-            document.querySelector('.comment-count').innerText = comments;
-            setTimeout(closeComments, 500);
-        });
+        function submitComment() {
+            const name = document.getElementById('commenterName').value;
+            const text = document.getElementById('commentText').value;
 
-        // 3. Existing Animations
+            if(name && text) {
+                const newComment = { name, text, date: new Date().toLocaleString() };
+                comments.push(newComment);
+                localStorage.setItem('portfolio_comments', JSON.stringify(comments));
+                
+                // Reset form
+                document.getElementById('commenterName').value = '';
+                document.getElementById('commentText').value = '';
+                
+                closeComments();
+                updateUI();
+                alert("Comment sent to Oridra's Admin Page!");
+            }
+        }
+
+        function renderAdminComments() {
+            const list = document.getElementById('admin-comments-list');
+            if (comments.length === 0) {
+                list.innerHTML = `<p class="text-gray-500 italic">No comments yet...</p>`;
+                return;
+            }
+            list.innerHTML = comments.map(c => `
+                <div class="bg-zinc-900 p-6 rounded-2xl border border-white/5">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-bold text-pink-500">${c.name}</span>
+                        <span class="text-xs text-gray-500">${c.date}</span>
+                    </div>
+                    <p class="text-gray-300">${c.text}</p>
+                </div>
+            `).join('');
+        }
+
+        // --- ORIGINAL ANIMATIONS ---
         window.onload = () => {
             gsap.to(".hero-text", { opacity: 1, y: -20, duration: 1.2, ease: "power4.out" });
             gsap.to(".hero-sub", { opacity: 1, duration: 1, delay: 0.5 });
+            updateUI();
         };
+
+        document.addEventListener("mousemove", (e) => {
+            const x = (e.clientX / window.innerWidth) - 0.5;
+            const y = (e.clientY / window.innerHeight) - 0.5;
+            gsap.to(".orb-1", { x: x * 100, y: y * 100, duration: 2, ease: "power2.out" });
+            gsap.to(".orb-2", { x: x * -150, y: y * -150, duration: 2, ease: "power2.out" });
+            gsap.to(".orb-3", { x: x * 50, y: y * -50, duration: 2, ease: "power2.out" });
+        });
+
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if(target) gsap.to(window, { duration: 1.5, scrollTo: target, ease: "power4.inOut" });
+            });
+        });
+
+        function animateRate(star) {
+            let siblings = Array.from(star.parentElement.children);
+            let idx = siblings.indexOf(star);
+            siblings.forEach((s, i) => {
+                if(i <= idx) {
+                    s.classList.add('active');
+                    gsap.from(s, { scale: 2, duration: 0.3, ease: "back.out" });
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        }
 
         window.addEventListener('scroll', () => {
             document.querySelectorAll('.work-card').forEach(card => {
-                if(card.getBoundingClientRect().top < window.innerHeight/5*4) card.classList.add('show');
+                const triggerBottom = window.innerHeight / 5 * 4;
+                const cardTop = card.getBoundingClientRect().top;
+                if(cardTop < triggerBottom) card.classList.add('show');
+            });
+        });
+
+        // --- NEW PREMIUM FORM FIELD ANIMATION LOGIC ---
+        const fields = document.querySelectorAll('.form-field-anim');
+        fields.forEach(field => {
+            field.addEventListener('mouseenter', () => {
+                gsap.to(field, { scale: 1.03, duration: 0.6, ease: "power2.out" });
+            });
+            field.addEventListener('mouseleave', () => {
+                // Return to 1.0 if not focused, otherwise keep at focus scale
+                if (document.activeElement !== field) {
+                    gsap.to(field, { scale: 1, duration: 0.6, ease: "power2.out" });
+                }
+            });
+            field.addEventListener('focus', () => {
+                gsap.to(field, { scale: 1.02, duration: 0.4, ease: "power2.out" });
+            });
+            field.addEventListener('blur', () => {
+                gsap.to(field, { scale: 1, duration: 0.4, ease: "power2.out" });
             });
         });
     </script>
