@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script>
+        // Desktop to Mobile Redirect Logic
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             window.location.href = "mobile.html";
         }
@@ -18,6 +19,7 @@
         body { background-color: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .syne { font-family: 'Syne', sans-serif; }
 
+        /* --- High-End Liquid Background Styles --- */
         .mesh-container {
             position: absolute;
             inset: 0;
@@ -65,7 +67,7 @@
         
         nav { background: rgba(5, 5, 5, 0.7) !important; backdrop-filter: blur(15px); }
 
-        /* --- NEW FORM FIELD ANIMATION STYLES --- */
+        /* Form Field Animation Styles */
         .form-field-anim {
             transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease !important;
             will-change: transform;
@@ -178,6 +180,12 @@
            <textarea name="message" placeholder="Tell me about your project..." rows="5" required class="form-field-anim w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition text-white"></textarea>
            <button class="w-full gradient-btn py-5 rounded-2xl font-bold text-lg syne uppercase tracking-widest text-white">Send Inquiry</button>
         </form>
+
+        <div class="mt-20 flex justify-center space-x-12 opacity-50 hover:opacity-100 transition duration-500">
+            <a href="https://www.facebook.com/oridra.gosh" target="_blank" class="text-xs font-bold tracking-widest hover:text-pink-500 transition">FACEBOOK</a>
+            <a href="https://www.instagram.com/oridra_gosh/" target="_blank" class="text-xs font-bold tracking-widest hover:text-pink-500 transition">INSTAGRAM</a>
+            <a href="https://t.me/Oridragosh" target="_blank" class="text-xs font-bold tracking-widest hover:text-pink-500 transition">TELEGRAM</a>
+        </div>
     </section>
 
     <script>
@@ -192,7 +200,6 @@
             renderAdminComments();
         }
 
-        // Like Logic: 1 tap like, 2 tap unlike
         function handleLike(el) {
             const icon = el.querySelector('.heart-icon');
             if (!liked) {
@@ -208,9 +215,9 @@
             updateUI();
         }
 
-        // Comment Logic
         function openComments() {
-            gsap.to("#commentModal", { display: 'flex', opacity: 1, duration: 0.4 });
+            gsap.set("#commentModal", { display: 'flex' });
+            gsap.to("#commentModal", { opacity: 1, duration: 0.4 });
         }
 
         function closeComments() {
@@ -228,7 +235,6 @@
                 comments.push(newComment);
                 localStorage.setItem('portfolio_comments', JSON.stringify(comments));
                 
-                // Reset form
                 document.getElementById('commenterName').value = '';
                 document.getElementById('commentText').value = '';
                 
@@ -255,7 +261,7 @@
             `).join('');
         }
 
-        // --- ORIGINAL ANIMATIONS ---
+        // --- ANIMATIONS ---
         window.onload = () => {
             gsap.to(".hero-text", { opacity: 1, y: -20, duration: 1.2, ease: "power4.out" });
             gsap.to(".hero-sub", { opacity: 1, duration: 1, delay: 0.5 });
@@ -299,24 +305,14 @@
             });
         });
 
-        // --- NEW PREMIUM FORM FIELD ANIMATION LOGIC ---
-        const fields = document.querySelectorAll('.form-field-anim');
-        fields.forEach(field => {
-            field.addEventListener('mouseenter', () => {
-                gsap.to(field, { scale: 1.03, duration: 0.6, ease: "power2.out" });
-            });
+        // Form field animations
+        document.querySelectorAll('.form-field-anim').forEach(field => {
+            field.addEventListener('mouseenter', () => gsap.to(field, { scale: 1.03, duration: 0.6, ease: "power2.out" }));
             field.addEventListener('mouseleave', () => {
-                // Return to 1.0 if not focused, otherwise keep at focus scale
-                if (document.activeElement !== field) {
-                    gsap.to(field, { scale: 1, duration: 0.6, ease: "power2.out" });
-                }
+                if (document.activeElement !== field) gsap.to(field, { scale: 1, duration: 0.6, ease: "power2.out" });
             });
-            field.addEventListener('focus', () => {
-                gsap.to(field, { scale: 1.02, duration: 0.4, ease: "power2.out" });
-            });
-            field.addEventListener('blur', () => {
-                gsap.to(field, { scale: 1, duration: 0.4, ease: "power2.out" });
-            });
+            field.addEventListener('focus', () => gsap.to(field, { scale: 1.02, duration: 0.4, ease: "power2.out" }));
+            field.addEventListener('blur', () => gsap.to(field, { scale: 1, duration: 0.4, ease: "power2.out" }));
         });
     </script>
 </body>
