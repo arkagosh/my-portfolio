@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <script>
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        window.location.href = "mobile.html";
-    }
-</script>
+        // Desktop to Mobile Redirect Logic remains
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            window.location.href = "mobile.html";
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oridra Gosh | Creative Portfolio</title>
@@ -18,49 +19,75 @@
         body { background-color: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .syne { font-family: 'Syne', sans-serif; }
 
-        /* High-End Gradient */
+        /* --- High-End Liquid Background Styles --- */
+        .mesh-container {
+            position: absolute;
+            inset: 0;
+            background: #050505;
+            overflow: hidden;
+            z-index: 0;
+            filter: blur(60px) contrast(120%); /* Creates the liquid merge effect */
+        }
+
+        .liquid-orb {
+            position: absolute;
+            border-radius: 50%;
+            mix-blend-mode: screen;
+            opacity: 0.5;
+            will-change: transform;
+            animation: move-liquid 25s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, #ff00cc 0%, transparent 70%);
+            top: -10%; left: 10%;
+        }
+
+        .orb-2 {
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, #3333ff 0%, transparent 70%);
+            bottom: -15%; right: 10%;
+            animation-duration: 35s; animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, #00f2ff 0%, transparent 70%);
+            top: 30%; left: 35%;
+            animation-duration: 20s; opacity: 0.3;
+        }
+
+        @keyframes move-liquid {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            100% { transform: translate(15%, 15%) scale(1.1) rotate(180deg); }
+        }
+
+        /* --- Your Original Styles --- */
         .gradient-text { background: linear-gradient(90deg, #ff00cc, #3333ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-btn { background: linear-gradient(90deg, #ff00cc, #3333ff); transition: 0.5s; }
-        .gradient-btn:hover { box-shadow: 0 0 20px rgba(255, 0, 204, 0.6); transform: scale(1.05); }
+        .gradient-btn:hover { box-shadow: 0 0 20px rgba(255, 0, 204, 0.6); transform: scale(1.05); color: white; }
 
-        /* Smooth Menu Underline Animation */
         .nav-link { position: relative; padding-bottom: 4px; overflow: hidden; }
         .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: #ff00cc; transform: translateX(-101%); transition: transform 0.3s ease; }
         .nav-link:hover::after { transform: translateX(0); }
 
-        /* Work Card Animation */
         .work-card { transform: translateY(50px); opacity: 0; transition: all 0.6s ease-out; }
         .work-card.show { transform: translateY(0); opacity: 1; }
 
-        /* Star Animation */
         .star-btn { transition: 0.3s; cursor: pointer; color: #333; }
         .star-btn.active { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
 
-        /* Responsive & Mobile Fixes */
-        @media (max-width: 768px) {
-            nav div.hidden.md\\:flex { display: none; } /* hide desktop menu on mobile */
-            .hero-text { font-size: 5rem !important; } /* smaller hero text */
-            .hero-sub { font-size: 0.8rem !important; } /* smaller subtitle */
-            #about { flex-direction: column; gap: 8rem; padding: 5rem 1rem; }
-            #work .grid { grid-template-columns: 1fr; gap: 2rem; }
-        }
+        form input, form textarea { transform: scale(1); transition: transform 0.3s ease; }
+        form input:hover, form textarea:hover { transform: scale(1.02); }
 
-        /* Form Hover Animation (Mobile + Desktop) */
-        form input, form textarea {
-            transform: scale(1);
-            transition: transform 0.3s ease;
-        }
-        form input:hover, form textarea:hover {
-            transform: scale(1.03);
-        }
-
-        /* Liquid Plus Video Fullscreen Smooth */
-        video { min-height: 100%; min-width: 100%; object-fit: cover; }
+        /* Glassmorphism Navigation */
+        nav { background: rgba(5, 5, 5, 0.7) !important; backdrop-filter: blur(15px); }
     </style>
 </head>
 <body>
 
-    <nav class="fixed top-0 w-full z-50 py-6 px-10 flex justify-between items-center bg-black/50 backdrop-blur-lg border-b border-white/10">
+    <nav class="fixed top-0 w-full z-50 py-6 px-10 flex justify-between items-center border-b border-white/10">
         <div class="text-2xl font-extrabold syne tracking-tighter">ORIDRA<span class="text-pink-500">.</span></div>
         
         <div class="hidden md:flex space-x-10 text-xs font-bold tracking-widest uppercase">
@@ -71,16 +98,21 @@
         </div>
 
         <div class="flex items-center space-x-5">
-            <a href="#contact" class="gradient-btn px-6 py-2 rounded-full text-xs font-bold">LET'S TALK</a>
+            <a href="#contact" class="gradient-btn px-6 py-2 rounded-full text-xs font-bold text-white uppercase tracking-wider">Let's Talk</a>
         </div>
     </nav>
 
     <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-30">
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-liquid-gradient-under-a-microscope-41315-large.mp4" type="video/mp4">
-        </video>
+        <div class="mesh-container">
+            <div class="liquid-orb orb-1"></div>
+            <div class="liquid-orb orb-2"></div>
+            <div class="liquid-orb orb-3"></div>
+        </div>
+
         <div class="relative z-10 text-center">
-            <h1 class="hero-text text-7xl md:text-9xl font-extrabold syne uppercase leading-none opacity-0">Creative<br><span class="gradient-text">Oridra</span></h1>
+            <h1 class="hero-text text-7xl md:text-9xl font-extrabold syne uppercase leading-none opacity-0">
+                Creative<br><span class="gradient-text">Oridra</span>
+            </h1>
             <p class="hero-sub text-gray-400 mt-6 tracking-[0.5em] text-sm opacity-0 uppercase">Graphic Designer & Web Developer</p>
         </div>
     </section>
@@ -93,14 +125,13 @@
             </p>
         </div>
         <div class="md:w-1/2 border border-white/10 p-4 rounded-3xl bg-zinc-900/50">
-            <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800" class="rounded-2xl grayscale hover:grayscale-0 transition duration-1000" alt="Design">
+            <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800" class="rounded-2xl grayscale hover:grayscale-0 transition duration-1000 w-full" alt="Design">
         </div>
     </section>
 
     <section id="work" class="py-32 bg-[#080808] px-10">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-5xl font-extrabold syne mb-16 text-center">Featured <span class="gradient-text">Work</span></h2>
-            
             <div class="grid md:grid-cols-2 gap-12">
                 <div class="work-card bg-zinc-900 rounded-3xl overflow-hidden border border-white/5">
                     <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800" class="w-full h-72 object-cover hover:scale-105 transition duration-700">
@@ -128,10 +159,10 @@
     <section id="contact" class="py-32 px-10 text-center bg-black">
         <h2 class="text-6xl font-extrabold syne mb-12">Get In <span class="gradient-text">Touch.</span></h2>
         <form action="https://formspree.io/f/xvzoblwp" method="POST" class="max-w-2xl mx-auto space-y-6">
-           <input type="text" name="name" placeholder="Full Name" required class="w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition">
-            <input type="email" name="email" placeholder="Email Address" required class="w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition">
-           <textarea name="message" placeholder="Tell me about your project..." rows="5" required class="w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition"></textarea>
-            <button class="w-full gradient-btn py-5 rounded-2xl font-bold text-lg syne uppercase tracking-widest">Send Inquiry</button>
+           <input type="text" name="name" placeholder="Full Name" required class="w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition text-white">
+           <input type="email" name="email" placeholder="Email Address" required class="w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition text-white">
+           <textarea name="message" placeholder="Tell me about your project..." rows="5" required class="w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition text-white"></textarea>
+           <button class="w-full gradient-btn py-5 rounded-2xl font-bold text-lg syne uppercase tracking-widest text-white">Send Inquiry</button>
         </form>
 
         <div class="mt-20 flex justify-center space-x-12 opacity-50 hover:opacity-100 transition duration-500">
@@ -142,28 +173,37 @@
     </section>
 
     <script>
-        // 1. HOME SCREEN ANIMATIONS (On Load)
+        // 1. HOME SCREEN ANIMATIONS
         window.onload = () => {
             gsap.to(".hero-text", { opacity: 1, y: -20, duration: 1.2, ease: "power4.out" });
             gsap.to(".hero-sub", { opacity: 1, duration: 1, delay: 0.5 });
         };
 
-        // 2. SMOOTH SCROLLING (Menu Button Page Logic)
+        // 2. MOUSE PARALLAX INTERACTION (New for Computer version)
+        document.addEventListener("mousemove", (e) => {
+            const x = (e.clientX / window.innerWidth) - 0.5;
+            const y = (e.clientY / window.innerHeight) - 0.5;
+            
+            gsap.to(".orb-1", { x: x * 100, y: y * 100, duration: 2, ease: "power2.out" });
+            gsap.to(".orb-2", { x: x * -150, y: y * -150, duration: 2, ease: "power2.out" });
+            gsap.to(".orb-3", { x: x * 50, y: y * -50, duration: 2, ease: "power2.out" });
+        });
+
+        // 3. SMOOTH SCROLLING
         document.querySelectorAll('nav a').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                gsap.to(window, { duration: 1.5, scrollTo: target, ease: "power4.inOut" });
+                if(target) gsap.to(window, { duration: 1.5, scrollTo: target, ease: "power4.inOut" });
             });
         });
 
-        // 3. LIKE ANIMATION (Heart Pop)
+        // 4. LIKE & RATE LOGIC
         function animateLike(el) {
             gsap.fromTo(el, { scale: 0.8 }, { scale: 1.5, duration: 0.2, yoyo: true, repeat: 1 });
             el.classList.toggle('text-pink-500');
         }
 
-        // 4. STAR RATING ANIMATION
         function animateRate(star) {
             let siblings = Array.from(star.parentElement.children);
             let idx = siblings.indexOf(star);
@@ -177,7 +217,7 @@
             });
         }
 
-        // 5. WORK CARDS REVEAL ON SCROLL
+        // 5. WORK CARDS REVEAL
         window.addEventListener('scroll', () => {
             document.querySelectorAll('.work-card').forEach(card => {
                 const triggerBottom = window.innerHeight / 5 * 4;
