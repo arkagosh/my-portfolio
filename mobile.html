@@ -61,8 +61,15 @@
 
         /* Mobile Specific Layout Fixes */
         @media (max-width: 768px) {
-            .hero-text { font-size: 3.5rem !important; line-height: 1.1; }
-            .hero-sub { font-size: 0.7rem !important; letter-spacing: 0.3em !important; }
+            
+.hero-text { 
+    font-size: 12vw !important; /* Scalable size based on screen width */
+    line-height: 1.1; 
+}
+.hero-sub { 
+    font-size: 3vw !important; 
+    letter-spacing: 0.2em !important; 
+}
             #about { padding: 4rem 1.5rem; gap: 3rem; }
             #work .grid { grid-template-columns: 1fr; }
             .nav-menu-mobile { background: rgba(5, 5, 5, 0.95); }
