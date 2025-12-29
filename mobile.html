@@ -13,6 +13,19 @@
         body { background-color: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         .syne { font-family: 'Syne', sans-serif; }
 
+        /* 100% ACCURATE TEXT FIX: Uses clamp to prevent overflow on mobile */
+        .hero-text { 
+            font-size: clamp(3rem, 12vw, 8rem) !important; 
+            line-height: 0.9;
+            letter-spacing: -0.05em;
+        }
+        
+        .hero-sub {
+            font-size: clamp(0.7rem, 2vw, 1rem) !important;
+            letter-spacing: 0.4em;
+            margin-top: 1.5rem;
+        }
+
         .gradient-text { background: linear-gradient(90deg, #ff00cc, #3333ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gradient-btn { background: linear-gradient(90deg, #ff00cc, #3333ff); }
 
@@ -22,14 +35,14 @@
             bottom: -100%;
             left: 0;
             width: 100%;
-            height: 75vh;
-            background: rgba(15, 15, 15, 0.98);
-            backdrop-filter: blur(25px);
+            height: 70vh;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 100;
-            border-radius: 30px 30px 0 0;
+            border-radius: 24px 24px 0 0;
             padding: 2rem;
-            transition: bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         #commentPanel.open { bottom: 0; }
         .panel-overlay {
@@ -40,21 +53,14 @@
             z-index: 90;
         }
 
-        .blue-glow { box-shadow: 0 0 15px rgba(51, 51, 255, 0.15); border: 1px solid rgba(51, 51, 255, 0.2) !important; }
-        .work-card { transform: translateY(30px); opacity: 0; }
-        .work-card.show { transform: translateY(0); opacity: 1; transition: all 0.6s ease-out; }
+        .work-card { transform: translateY(30px); opacity: 0; transition: all 0.6s ease-out; }
+        .work-card.show { transform: translateY(0); opacity: 1; }
 
-        /* Hero Text Fix: Prevents "Big Text" on mobile */
-        @media (max-width: 640px) {
-            .hero-text { font-size: 3.5rem !important; line-height: 1.1; }
-        }
-
-        /* Animation for Orbs */
-        .mesh-bg { position: absolute; inset: 0; z-index: 0; filter: blur(60px); opacity: 0.3; }
-        .glow-orb { position: absolute; border-radius: 50%; animation: float 20s infinite alternate ease-in-out; }
-        .orb-1 { width: 100vw; height: 100vw; background: radial-gradient(circle, #3333ff 0%, transparent 70%); top: -20%; left: -20%; }
-        .orb-2 { width: 80vw; height: 80vw; background: radial-gradient(circle, #ff00cc 0%, transparent 70%); bottom: -10%; right: -10%; }
-        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(10%, 10%) scale(1.1); } }
+        /* Performance optimized Mesh */
+        .mesh-bg { position: absolute; inset: 0; z-index: 0; filter: blur(60px); opacity: 0.3; pointer-events: none; }
+        .glow-orb { position: absolute; border-radius: 50%; }
+        .orb-1 { width: 80vw; height: 80vw; background: radial-gradient(circle, #3333ff 0%, transparent 70%); top: -10%; left: -10%; }
+        .orb-2 { width: 70vw; height: 70vw; background: radial-gradient(circle, #ff00cc 0%, transparent 70%); bottom: 0; right: -10%; }
     </style>
 </head>
 <body>
@@ -62,17 +68,17 @@
     <div class="panel-overlay" id="overlay" onclick="closeComments()"></div>
     
     <div id="commentPanel">
-        <div class="w-12 h-1.5 bg-white/20 rounded-full mx-auto mb-6" onclick="closeComments()"></div>
+        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-8" onclick="closeComments()"></div>
         <h2 class="syne text-2xl font-bold mb-4">Post a <span class="gradient-text">Comment</span></h2>
         <form id="mobileCommentForm" action="https://formspree.io/f/xvzoblwp" method="POST" class="space-y-4">
-            <input type="text" name="name" placeholder="Your Name" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500 text-white">
-            <textarea name="comment" placeholder="Write your message..." rows="4" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-2xl outline-none focus:border-pink-500 text-white"></textarea>
-            <button type="submit" class="w-full gradient-btn py-4 rounded-2xl font-bold uppercase tracking-widest text-white shadow-lg">Submit Comment</button>
+            <input type="text" name="name" placeholder="Your Name" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl outline-none focus:border-pink-500 text-white">
+            <textarea name="comment" placeholder="Your message..." rows="3" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl outline-none focus:border-pink-500 text-white"></textarea>
+            <button type="submit" class="w-full gradient-btn py-4 rounded-xl font-bold uppercase text-white">Send Comment</button>
         </form>
     </div>
 
-    <nav class="fixed top-0 w-full z-50 py-4 px-6 flex justify-between items-center bg-black/70 backdrop-blur-md border-b border-white/5">
-        <div class="text-xl font-extrabold syne tracking-tighter">ORIDRA<span class="text-pink-500">.</span></div>
+    <nav class="fixed top-0 w-full z-50 py-4 px-6 flex justify-between items-center bg-black/60 backdrop-blur-lg border-b border-white/5">
+        <div class="text-xl font-black syne tracking-tighter uppercase">ORIDRA<span class="text-pink-500">.</span></div>
         <a href="#contact" class="gradient-btn px-5 py-2 rounded-full text-[10px] font-bold uppercase text-white">LET'S TALK</a>
     </nav>
 
@@ -81,64 +87,55 @@
             <div class="glow-orb orb-1"></div>
             <div class="glow-orb orb-2"></div>
         </div>
-        <div class="relative z-10 text-center px-4">
-            <h1 class="hero-text text-5xl sm:text-7xl md:text-9xl font-extrabold syne uppercase leading-none opacity-0">
+        <div class="relative z-10 text-center px-6">
+            <h1 class="hero-text syne font-extrabold uppercase opacity-0">
                 Creative<br><span class="gradient-text">Oridra</span>
             </h1>
-            <p class="hero-sub text-gray-400 mt-6 tracking-[0.3em] text-[10px] sm:text-sm opacity-0 uppercase">
+            <p class="hero-sub text-gray-400 font-semibold opacity-0 uppercase">
                 Graphic Designer & Web Developer
             </p>
         </div>
     </section>
 
-    <section id="work" class="py-20 bg-[#080808] px-6">
-        <h2 class="text-4xl font-extrabold syne mb-10 text-center">Featured <span class="gradient-text">Work</span></h2>
-        <div class="grid gap-8 max-w-lg mx-auto">
-            <div class="work-card bg-zinc-900 rounded-3xl overflow-hidden border border-white/5 blue-glow">
-                <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800" class="w-full h-64 object-cover" alt="Project">
+    <section id="work" class="py-20 bg-black px-6">
+        <div class="max-w-lg mx-auto">
+            <h2 class="text-3xl font-bold syne mb-10 text-center">Featured <span class="gradient-text">Work</span></h2>
+            
+            <div class="work-card bg-zinc-900/50 rounded-3xl overflow-hidden border border-white/10">
+                <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800" class="w-full h-64 object-cover">
                 <div class="p-6">
                     <h3 class="text-xl font-bold syne mb-6">Minimalist Branding</h3>
-                    <div class="flex items-center justify-between border-t border-white/10 pt-6">
-                        <div class="flex space-x-6">
-                            <button onclick="handleLike(this)" class="flex items-center space-x-2 text-xl active:scale-125 transition duration-200">
-                                <span>❤️</span>
-                                <span class="like-count text-sm text-gray-400">45</span>
-                            </button>
-                            <button onclick="openComments()" class="flex items-center space-x-2 text-xl active:opacity-50 transition">
-                                <span>💬</span>
-                                <span class="comment-count text-sm text-gray-400">12</span>
-                            </button>
-                        </div>
+                    <div class="flex items-center space-x-6 border-t border-white/5 pt-6">
+                        <button onclick="handleLike(this)" class="flex items-center space-x-2 text-xl active:scale-125 transition">
+                            <span>❤️</span> <span class="like-count text-sm text-gray-400">45</span>
+                        </button>
+                        <button onclick="openComments()" class="flex items-center space-x-2 text-xl active:opacity-50 transition">
+                            <span>💬</span> <span class="text-sm text-gray-400">12</span>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="py-20 px-6 text-center bg-black">
-        <h2 class="text-4xl font-extrabold syne mb-10">Get In <span class="gradient-text">Touch.</span></h2>
+    <section id="contact" class="py-20 px-6 text-center">
+        <h2 class="text-3xl font-bold syne mb-10">Get In <span class="gradient-text">Touch.</span></h2>
         <form action="https://formspree.io/f/xvzoblwp" method="POST" class="space-y-4 max-w-lg mx-auto">
-           <input type="text" name="name" placeholder="Full Name" required class="w-full bg-zinc-900/50 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-blue-500">
-           <input type="email" name="email" placeholder="Email Address" required class="w-full bg-zinc-900/50 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-blue-500">
-           <textarea name="message" placeholder="Project details..." rows="4" required class="w-full bg-zinc-900/50 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-blue-500"></textarea>
+           <input type="text" name="name" placeholder="Name" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl text-white outline-none">
+           <input type="email" name="email" placeholder="Email" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl text-white outline-none">
+           <textarea name="message" placeholder="Project details" rows="4" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl text-white outline-none"></textarea>
            <button class="w-full gradient-btn py-4 rounded-xl font-bold text-white uppercase tracking-widest">Send Inquiry</button>
         </form>
     </section>
 
     <script>
-        // 1. LIKE LOGIC
         function handleLike(btn) {
-            let countSpan = btn.querySelector('.like-count');
-            let currentLikes = parseInt(countSpan.innerText);
-            
-            if(!btn.classList.contains('liked')) {
-                countSpan.innerText = currentLikes + 1;
-                btn.classList.add('liked', 'text-pink-500');
-                gsap.fromTo(btn.querySelector('span'), {scale: 1}, {scale: 1.5, duration: 0.2, yoyo: true, repeat: 1});
-            }
+            let span = btn.querySelector('.like-count');
+            span.innerText = parseInt(span.innerText) + 1;
+            btn.classList.add('text-pink-500');
+            gsap.fromTo(btn.querySelector('span'), {scale: 0.8}, {scale: 1.3, duration: 0.2, yoyo: true, repeat: 1});
         }
 
-        // 2. COMMENT PANEL LOGIC
         function openComments() {
             document.getElementById('commentPanel').classList.add('open');
             document.getElementById('overlay').style.display = 'block';
@@ -151,21 +148,17 @@
             document.body.style.overflow = 'auto';
         }
 
-        // 3. CORE ANIMATIONS
         window.addEventListener('DOMContentLoaded', () => {
-            const tl = gsap.timeline();
-            tl.to(".hero-text", { opacity: 1, y: 0, duration: 1, ease: "power3.out" })
-              .to(".hero-sub", { opacity: 1, duration: 0.8 }, "-=0.4");
+            gsap.to(".hero-text", { opacity: 1, y: 0, duration: 1, ease: "power3.out" });
+            gsap.to(".hero-sub", { opacity: 1, duration: 1, delay: 0.5 });
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('show');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.work-card').forEach(card => observer.observe(card));
         });
-
-        // Scroll Reveal
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('show');
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.work-card').forEach(card => observer.observe(card));
     </script>
 </body>
 </html>
