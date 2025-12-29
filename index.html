@@ -48,8 +48,8 @@
         }
 
         .gradient-text { background: linear-gradient(90deg, #ff00cc, #3333ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .gradient-btn { background: linear-gradient(90deg, #ff00cc, #3333ff); transition: 0.5s; }
-        .gradient-btn:hover { box-shadow: 0 0 20px rgba(255, 0, 204, 0.6); transform: scale(1.05); color: white; }
+        .gradient-btn { background: linear-gradient(90deg, #ff00cc, #3333ff); transition: 0.5s; color: white; }
+        .gradient-btn:hover { box-shadow: 0 0 20px rgba(255, 0, 204, 0.6); transform: scale(1.05); }
 
         .nav-link { position: relative; padding-bottom: 4px; overflow: hidden; cursor: pointer; }
         .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: #ff00cc; transform: translateX(-101%); transition: transform 0.3s ease; }
@@ -61,13 +61,64 @@
         .star-btn { transition: 0.3s; cursor: pointer; color: #333; }
         .star-btn.active { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
 
-        /* Comment & Detail Modal Styles */
-        #commentModal, #detailsPage { display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); align-items: center; justify-content: center; opacity: 0; }
-        .modal-content { background: #111; border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; border-radius: 32px; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; position: relative; }
+        /* Enhanced About Page Styles */
+        #detailsPage {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+            overflow-y: auto;
+            opacity: 0;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .glass-card:hover { border-color: rgba(255, 0, 204, 0.4); transform: translateY(-5px); }
+
+        .skill-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff00cc, #3333ff);
+            width: 0%;
+        }
+
+        .close-btn-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .close-btn-circle:hover {
+            background: #ff00cc;
+            transform: rotate(90deg) scale(1.1);
+            border-color: transparent;
+        }
+
+        #commentModal { display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); align-items: center; justify-content: center; opacity: 0; }
+        .modal-content { background: #111; border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; border-radius: 32px; width: 90%; max-width: 800px; position: relative; }
         
         nav { background: rgba(5, 5, 5, 0.7) !important; backdrop-filter: blur(15px); }
 
-        /* Form Field Animation Styles */
         .form-field-anim {
             transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease !important;
             will-change: transform;
@@ -84,40 +135,82 @@
 </head>
 <body>
 
-    <div id="detailsPage">
-        <div class="modal-content border-pink-500/20 shadow-2xl shadow-pink-500/10">
-            <button onclick="closeDetails()" class="absolute top-6 right-8 text-3xl text-gray-400 hover:text-white">&times;</button>
-            
-            <div class="grid md:grid-cols-3 gap-10">
-                <div class="md:col-span-2">
-                    <h2 class="syne text-5xl font-extrabold mb-6">About <span class="gradient-text">Oridra</span></h2>
-                    <div class="space-y-4 text-gray-300 leading-relaxed text-lg">
-                        <p>My name is <span class="text-white font-bold">Oridra Gosh</span>, and I am a passionate student and creative professional currently studying in <span class="text-pink-500 font-semibold">Class 11</span>. From an early stage, I developed a strong interest in technology, design, and digital platforms, which led me to build practical skills alongside my academic studies.</p>
-                        <p>I have successfully completed professional training in <span class="text-white">COA (Computer Office Application)</span>, <span class="text-white">GD (Graphic Design)</span>, and <span class="text-white">DMF (Digital Marketing & Freelancing)</span> from <span class="gradient-text font-bold">BRAC ISD</span>, one of the most reputable skill development institutes in Bangladesh.</p>
-                        <p>As a Graphic Designer, I specialize in creating visually appealing designs that focus on creativity, color balance, typography, and modern design trends. As a Developer and Digital Marketer, I understand how technology and marketing work together to build strong online identities.</p>
+    <div id="detailsPage" class="flex-col">
+        <div class="container mx-auto px-6 py-20 relative">
+            <div class="absolute top-10 right-10">
+                <button onclick="closeDetails()" class="close-btn-circle group">
+                    <span class="text-3xl group-hover:text-white text-pink-500">&times;</span>
+                </button>
+            </div>
+
+            <div class="text-center mb-20 about-reveal">
+                <h2 class="syne text-6xl md:text-8xl font-black uppercase tracking-tighter">
+                    THE <span class="gradient-text">CREATIVE</span><br>VISIONARY
+                </h2>
+                <div class="h-1 w-24 bg-pink-500 mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-7 space-y-8 about-reveal">
+                    <div class="glass-card p-10 rounded-[40px]">
+                        <h3 class="syne text-3xl font-bold mb-6 flex items-center gap-4">
+                            <span class="text-pink-500">01.</span> Biography
+                        </h3>
+                        <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
+                            <p>My name is <span class="text-white font-bold">Oridra Gosh</span>, and I am a passionate student and creative professional currently studying in <span class="text-pink-500 font-semibold">Class 11</span>. I developed a strong interest in technology and design, building practical skills alongside my academic studies.</p>
+                            <p>I have successfully completed professional training in <span class="text-white">COA (Computer Office Application)</span>, <span class="text-white">GD (Graphic Design)</span>, and <span class="text-white">DMF (Digital Marketing & Freelancing)</span> from <span class="gradient-text font-bold">BRAC ISD</span>, one of the most reputable institutes in Bangladesh.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="glass-card p-8 rounded-3xl">
+                            <p class="text-pink-500 font-bold syne mb-2 uppercase text-xs tracking-widest">Education</p>
+                            <p class="text-white text-xl font-bold">Class 11 (High School)</p>
+                            <p class="text-gray-500 text-sm mt-1">Academic & Tech Focus</p>
+                        </div>
+                        <div class="glass-card p-8 rounded-3xl">
+                            <p class="text-blue-500 font-bold syne mb-2 uppercase text-xs tracking-widest">Location</p>
+                            <p class="text-white text-xl font-bold">Cumilla, Bangladesh</p>
+                            <p class="text-gray-500 text-sm mt-1">Available Globally</p>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="bg-zinc-950/50 p-8 rounded-3xl border border-white/5 space-y-6">
-                    <h3 class="syne text-xl font-bold border-b border-white/10 pb-2">Personal Details</h3>
-                    <div class="space-y-4 text-sm">
-                        <div><p class="text-gray-500 uppercase tracking-tighter">Location</p><p class="font-semibold text-pink-500">Cumilla, Bangladesh</p></div>
-                        <div><p class="text-gray-500 uppercase tracking-tighter">Education</p><p class="font-semibold">Class 11 (High School)</p></div>
-                        <div><p class="text-gray-500 uppercase tracking-tighter">Institute</p><p class="font-semibold">BRAC ISD</p></div>
-                        <div><p class="text-gray-500 uppercase tracking-tighter">Email</p><p class="font-semibold text-blue-400 select-all">arkagosh22@gmail.com</p></div>
+
+                <div class="lg:col-span-5 space-y-6 about-reveal">
+                    <div class="glass-card p-10 rounded-[40px] border-pink-500/20">
+                        <h3 class="syne text-3xl font-bold mb-8 uppercase tracking-tighter">Expertise <span class="text-pink-500">&</span> Certs</h3>
+                        
+                        <div class="space-y-8">
+                            <div>
+                                <div class="flex justify-between items-end mb-2">
+                                    <span class="text-white font-bold">Computer Office (COA)</span>
+                                    <span class="text-pink-500 text-xs font-black">CERTIFIED</span>
+                                </div>
+                                <div class="skill-bar-container"><div class="skill-progress" data-width="95%"></div></div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-end mb-2">
+                                    <span class="text-white font-bold">Graphic Design (GD)</span>
+                                    <span class="text-pink-500 text-xs font-black">CERTIFIED</span>
+                                </div>
+                                <div class="skill-bar-container"><div class="skill-progress" data-width="90%"></div></div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-end mb-2">
+                                    <span class="text-white font-bold">Digital Marketing (DMF)</span>
+                                    <span class="text-pink-500 text-xs font-black">CERTIFIED</span>
+                                </div>
+                                <div class="skill-bar-container"><div class="skill-progress" data-width="85%"></div></div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <h3 class="syne text-xl font-bold border-b border-white/10 pb-2 pt-4">Expertise</h3>
-                    <ul class="space-y-2">
-                        <li class="flex items-center gap-2"><span class="text-pink-500">✔</span> Computer Office (COA)</li>
-                        <li class="flex items-center gap-2"><span class="text-pink-500">✔</span> Graphic Design (GD)</li>
-                        <li class="flex items-center gap-2"><span class="text-pink-500">✔</span> Digital Marketing (DMF)</li>
-                    </ul>
+                    <button onclick="closeDetails()" class="w-full py-6 rounded-full bg-white text-black font-black syne uppercase tracking-widest hover:bg-pink-500 hover:text-white transition-all duration-500">
+                        Back to Portfolio
+                    </button>
                 </div>
-            </div>
-            
-            <div class="mt-10 pt-10 border-t border-white/10 text-center">
-                <button onclick="closeDetails()" class="gradient-btn px-10 py-4 rounded-full font-bold uppercase tracking-widest text-sm">Back to Portfolio</button>
             </div>
         </div>
     </div>
@@ -163,9 +256,9 @@
 
     <section id="about" class="py-32 px-10 max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
         <div class="md:w-1/2">
-            <h2 class="text-5xl font-extrabold syne mb-8">Creative <span class="gradient-text">Mind.</span></h2>
+            <h2 class="text-5xl font-extrabold syne mb-8 uppercase tracking-tighter">Creative <span class="gradient-text">Mind.</span></h2>
             <p class="text-gray-300 text-xl leading-relaxed mb-6">
-                Oridra Gosh – A passionate Graphic Designer and skilled Developer. I bring creativity and technical expertise together to craft visually stunning designs...
+                Oridra Gosh – A passionate Graphic Designer and skilled Developer. I bring creativity and technical expertise together to craft visually stunning designs.
             </p>
             <button onclick="openDetails()" class="text-pink-500 font-bold tracking-widest hover:translate-x-3 transition duration-300 flex items-center gap-2">
                 READ FULL BIOGRAPHY <span>→</span>
@@ -178,7 +271,7 @@
 
     <section id="work" class="py-32 bg-[#080808] px-10">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-5xl font-extrabold syne mb-16 text-center">Featured <span class="gradient-text">Work</span></h2>
+            <h2 class="text-5xl font-extrabold syne mb-16 text-center uppercase tracking-tighter">Featured <span class="gradient-text">Work</span></h2>
             <div class="grid md:grid-cols-2 gap-12">
                 <div class="work-card bg-zinc-900 rounded-3xl overflow-hidden border border-white/5">
                     <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800" class="w-full h-72 object-cover hover:scale-105 transition duration-700">
@@ -217,12 +310,12 @@
     </section>
 
     <section id="contact" class="py-32 px-10 text-center bg-black">
-        <h2 class="text-6xl font-extrabold syne mb-12">Get In <span class="gradient-text">Touch.</span></h2>
+        <h2 class="text-6xl font-extrabold syne mb-12 uppercase tracking-tighter">Get In <span class="gradient-text">Touch.</span></h2>
         <form action="https://formspree.io/f/xvzoblwp" method="POST" class="max-w-2xl mx-auto space-y-6">
            <input type="text" name="name" placeholder="Full Name" required class="form-field-anim w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition text-white">
            <input type="email" name="email" placeholder="Email Address" required class="form-field-anim w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition text-white">
            <textarea name="message" placeholder="Tell me about your project..." rows="5" required class="form-field-anim w-full bg-zinc-900 border border-white/10 p-5 rounded-2xl focus:border-pink-500 outline-none transition text-white"></textarea>
-           <button class="w-full gradient-btn py-5 rounded-2xl font-bold text-lg syne uppercase tracking-widest text-white">Send Inquiry</button>
+           <button class="w-full gradient-btn py-5 rounded-2xl font-bold text-lg syne uppercase tracking-widest">Send Inquiry</button>
         </form>
 
         <div class="mt-20 flex justify-center space-x-12 opacity-50 hover:opacity-100 transition duration-500">
@@ -233,29 +326,55 @@
     </section>
 
     <script>
-        // --- DETAILS PAGE LOGIC ---
+        // --- UPDATED DETAILS PAGE LOGIC ---
         function openDetails() {
-            gsap.set("#detailsPage", { display: 'flex' });
-            gsap.to("#detailsPage", { opacity: 1, duration: 0.6, ease: "power4.out" });
-            gsap.from("#detailsPage .modal-content", { y: 100, scale: 0.9, duration: 0.8, ease: "back.out(1.7)", delay: 0.1 });
+            const details = document.getElementById('detailsPage');
             document.body.style.overflow = 'hidden';
+            gsap.set(details, { display: 'flex', opacity: 0 });
+            
+            gsap.to(details, { opacity: 1, duration: 0.5, ease: "power2.out" });
+
+            gsap.from(".about-reveal", {
+                y: 100,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power4.out",
+                delay: 0.2
+            });
+
+            gsap.to(".skill-progress", {
+                width: (i, el) => el.getAttribute('data-width'),
+                duration: 1.5,
+                ease: "expo.out",
+                delay: 0.8,
+                stagger: 0.1
+            });
         }
 
         function closeDetails() {
-            gsap.to("#detailsPage", { opacity: 0, duration: 0.4, onComplete: () => {
-                document.getElementById('detailsPage').style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }});
+            gsap.to("#detailsPage", {
+                opacity: 0,
+                y: 50,
+                duration: 0.5,
+                ease: "power2.in",
+                onComplete: () => {
+                    document.getElementById('detailsPage').style.display = 'none';
+                    gsap.set("#detailsPage", { y: 0 });
+                    document.body.style.overflow = 'auto';
+                    gsap.set(".skill-progress", { width: "0%" });
+                }
+            });
         }
 
-        // --- LOGIC FOR LIKES & COMMENTS ---
+        // --- LIKES & COMMENTS ---
         let likes = 0;
         let liked = false;
         let comments = JSON.parse(localStorage.getItem('portfolio_comments')) || [];
 
         function updateUI() {
-            document.getElementById('like-count').innerText = likes;
-            document.getElementById('comment-count').innerText = comments.length;
+            if(document.getElementById('like-count')) document.getElementById('like-count').innerText = likes;
+            if(document.getElementById('comment-count')) document.getElementById('comment-count').innerText = comments.length;
             renderAdminComments();
         }
 
@@ -288,23 +407,21 @@
         function submitComment() {
             const name = document.getElementById('commenterName').value;
             const text = document.getElementById('commentText').value;
-
             if(name && text) {
                 const newComment = { name, text, date: new Date().toLocaleString() };
                 comments.push(newComment);
                 localStorage.setItem('portfolio_comments', JSON.stringify(comments));
-                
                 document.getElementById('commenterName').value = '';
                 document.getElementById('commentText').value = '';
-                
                 closeComments();
                 updateUI();
-                alert("Comment sent to Oridra's Admin Page!");
+                alert("Comment sent!");
             }
         }
 
         function renderAdminComments() {
             const list = document.getElementById('admin-comments-list');
+            if (!list) return;
             if (comments.length === 0) {
                 list.innerHTML = `<p class="text-gray-500 italic">No comments yet...</p>`;
                 return;
@@ -320,7 +437,7 @@
             `).join('');
         }
 
-        // --- ANIMATIONS ---
+        // --- GLOBAL ANIMATIONS ---
         window.onload = () => {
             gsap.to(".hero-text", { opacity: 1, y: -20, duration: 1.2, ease: "power4.out" });
             gsap.to(".hero-sub", { opacity: 1, duration: 1, delay: 0.5 });
@@ -364,14 +481,11 @@
             });
         });
 
-        // Form field animations
         document.querySelectorAll('.form-field-anim').forEach(field => {
-            field.addEventListener('mouseenter', () => gsap.to(field, { scale: 1.03, duration: 0.6, ease: "power2.out" }));
+            field.addEventListener('mouseenter', () => gsap.to(field, { scale: 1.02, duration: 0.4 }));
             field.addEventListener('mouseleave', () => {
-                if (document.activeElement !== field) gsap.to(field, { scale: 1, duration: 0.6, ease: "power2.out" });
+                if (document.activeElement !== field) gsap.to(field, { scale: 1, duration: 0.4 });
             });
-            field.addEventListener('focus', () => gsap.to(field, { scale: 1.02, duration: 0.4, ease: "power2.out" }));
-            field.addEventListener('blur', () => gsap.to(field, { scale: 1, duration: 0.4, ease: "power2.out" }));
         });
     </script>
 </body>
