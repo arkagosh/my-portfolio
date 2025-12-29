@@ -55,7 +55,6 @@
             bottom: -15%; right: -30%;
         }
 
-        /* Placement Fixes */
         .gradient-text { 
             background: linear-gradient(90deg, #ff00cc, #3333ff); 
             -webkit-background-clip: text; 
@@ -79,10 +78,10 @@
             align-items: center; justify-content: center; opacity: 0;
         }
 
-        /* Improved Hero Placement */
+        /* Hero Container Placement */
         #home {
             min-height: 100vh;
-            padding-top: 60px; /* Accounts for fixed nav height */
+            padding-top: 80px;
         }
     </style>
 </head>
@@ -111,10 +110,10 @@
             <div class="glow-orb orb-2"></div>
         </div>
         <div class="relative z-10 px-6">
-            <h1 class="hero-text text-[14vw] font-extrabold syne uppercase leading-[0.85] opacity-0 tracking-tighter">
+            <h1 class="hero-text text-[11vw] font-extrabold syne uppercase leading-[0.85] opacity-0 tracking-tighter">
                 Creative<br><span class="gradient-text">Oridra</span>
             </h1>
-            <p class="hero-sub text-gray-400 mt-8 tracking-[0.4em] text-[11px] opacity-0 uppercase font-semibold">
+            <p class="hero-sub text-gray-400 mt-6 tracking-[0.4em] text-[10px] opacity-0 uppercase font-semibold">
                 Graphic Designer & Developer
             </p>
         </div>
@@ -192,13 +191,11 @@
             renderAdminComments();
         }
 
-        // Optimized GSAP Timeline for smooth entry
         window.addEventListener('DOMContentLoaded', () => {
             const tl = gsap.timeline();
             tl.to(".hero-text", { opacity: 1, y: 0, duration: 1.2, ease: "power4.out" })
               .to(".hero-sub", { opacity: 1, y: 0, duration: 1 }, "-=0.7");
             
-            // Subtle Orb Movement for Mobile Performance
             gsap.to(".orb-1", { x: 30, y: 40, duration: 10, repeat: -1, yoyo: true, ease: "sine.inOut" });
             gsap.to(".orb-2", { x: -40, y: -30, duration: 12, repeat: -1, yoyo: true, ease: "sine.inOut" });
             
