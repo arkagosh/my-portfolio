@@ -2,163 +2,268 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Oridra Gosh | Creative Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Oridra Gosh | Mobile Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        body { background-color: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        body { 
+            background-color: #050505; 
+            color: #fff; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            touch-action: manipulation; /* Improves mobile tap response */
+        }
         .syne { font-family: 'Syne', sans-serif; }
 
-        /* 100% ACCURATE TEXT FIX: Uses clamp to prevent overflow on mobile */
-        .hero-text { 
-            font-size: clamp(3rem, 12vw, 8rem) !important; 
-            line-height: 0.9;
-            letter-spacing: -0.05em;
+        /* Performance Optimization: Hardware Acceleration */
+        .hero-text, .hero-sub, .work-card, .glow-orb {
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+
+        /* --- Liquid Mesh Background (Mobile Optimized) --- */
+        .mesh-bg {
+            position: fixed; /* Fixed so it doesn't jitter on scroll */
+            inset: 0;
+            background-color: #050505;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(50px); /* Lower blur for better mobile FPS */
+            opacity: 0.35;
+        }
+
+        .orb-1 {
+            width: 80vw; height: 80vw;
+            background: radial-gradient(circle, #3333ff 0%, transparent 70%);
+            top: -10%; left: -20%;
+        }
+
+        .orb-2 {
+            width: 90vw; height: 90vw;
+            background: radial-gradient(circle, #ff00cc 0%, transparent 70%);
+            bottom: -10%; right: -20%;
+        }
+
+        /* --- Common Styles --- */
+        .gradient-text { 
+            background: linear-gradient(90deg, #ff00cc, #3333ff); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
         }
         
-        .hero-sub {
-            font-size: clamp(0.7rem, 2vw, 1rem) !important;
-            letter-spacing: 0.4em;
-            margin-top: 1.5rem;
+        .gradient-btn { 
+            background: linear-gradient(90deg, #ff00cc, #3333ff); 
+            box-shadow: 0 4px 15px rgba(255, 0, 204, 0.3);
         }
 
-        .gradient-text { background: linear-gradient(90deg, #ff00cc, #3333ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .gradient-btn { background: linear-gradient(90deg, #ff00cc, #3333ff); }
-
-        /* Mobile Slide-up Comment Panel */
-        #commentPanel {
-            position: fixed;
-            bottom: -100%;
-            left: 0;
-            width: 100%;
-            height: 70vh;
-            background: rgba(10, 10, 10, 0.98);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 100;
-            border-radius: 24px 24px 0 0;
-            padding: 2rem;
-            transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        #commentPanel.open { bottom: 0; }
-        .panel-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            z-index: 90;
-        }
-
-        .work-card { transform: translateY(30px); opacity: 0; transition: all 0.6s ease-out; }
+        .work-card { transform: translateY(30px); opacity: 0; transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
         .work-card.show { transform: translateY(0); opacity: 1; }
 
-        /* Performance optimized Mesh */
-        .mesh-bg { position: absolute; inset: 0; z-index: 0; filter: blur(60px); opacity: 0.3; pointer-events: none; }
-        .glow-orb { position: absolute; border-radius: 50%; }
-        .orb-1 { width: 80vw; height: 80vw; background: radial-gradient(circle, #3333ff 0%, transparent 70%); top: -10%; left: -10%; }
-        .orb-2 { width: 70vw; height: 70vw; background: radial-gradient(circle, #ff00cc 0%, transparent 70%); bottom: 0; right: -10%; }
+        .star-btn { transition: 0.2s; cursor: pointer; color: #333; }
+        .star-btn.active { color: #ffd700; text-shadow: 0 0 8px #ffd700; }
+
+        /* Comment Modal */
+        #commentModal { 
+            display: none; position: fixed; inset: 0; z-index: 100; 
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); 
+            align-items: center; justify-content: center; opacity: 0;
+        }
     </style>
 </head>
 <body>
 
-    <div class="panel-overlay" id="overlay" onclick="closeComments()"></div>
-    
-    <div id="commentPanel">
-        <div class="w-12 h-1 bg-white/20 rounded-full mx-auto mb-8" onclick="closeComments()"></div>
-        <h2 class="syne text-2xl font-bold mb-4">Post a <span class="gradient-text">Comment</span></h2>
-        <form id="mobileCommentForm" action="https://formspree.io/f/xvzoblwp" method="POST" class="space-y-4">
-            <input type="text" name="name" placeholder="Your Name" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl outline-none focus:border-pink-500 text-white">
-            <textarea name="comment" placeholder="Your message..." rows="3" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl outline-none focus:border-pink-500 text-white"></textarea>
-            <button type="submit" class="w-full gradient-btn py-4 rounded-xl font-bold uppercase text-white">Send Comment</button>
-        </form>
+    <div id="commentModal">
+        <div class="bg-zinc-900 border border-white/10 p-6 rounded-3xl w-[90%] max-w-sm">
+            <h3 class="syne text-xl mb-4">Post a <span class="gradient-text">Comment</span></h3>
+            <input type="text" id="commenterName" placeholder="Your Name" class="w-full bg-black border border-white/10 p-4 rounded-xl mb-3 outline-none focus:border-pink-500 text-white">
+            <textarea id="commentText" placeholder="Message..." rows="3" class="w-full bg-black border border-white/10 p-4 rounded-xl mb-4 outline-none focus:border-pink-500 text-white"></textarea>
+            <div class="flex gap-3">
+                <button onclick="submitComment()" class="flex-1 gradient-btn py-3 rounded-xl font-bold text-sm uppercase">Post</button>
+                <button onclick="closeComments()" class="flex-1 bg-zinc-800 py-3 rounded-xl font-bold text-sm uppercase">Close</button>
+            </div>
+        </div>
     </div>
 
     <nav class="fixed top-0 w-full z-50 py-4 px-6 flex justify-between items-center bg-black/60 backdrop-blur-lg border-b border-white/5">
-        <div class="text-xl font-black syne tracking-tighter uppercase">ORIDRA<span class="text-pink-500">.</span></div>
-        <a href="#contact" class="gradient-btn px-5 py-2 rounded-full text-[10px] font-bold uppercase text-white">LET'S TALK</a>
+        <div class="text-xl font-extrabold syne tracking-tighter">ORIDRA<span class="text-pink-500">.</span></div>
+        <a href="#contact" class="gradient-btn px-5 py-2 rounded-full text-[10px] font-bold uppercase text-white tracking-widest">Hire Me</a>
     </nav>
 
-    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+    <section id="home" class="relative h-screen flex items-center justify-center">
         <div class="mesh-bg">
             <div class="glow-orb orb-1"></div>
             <div class="glow-orb orb-2"></div>
         </div>
-        <div class="relative z-10 text-center px-6">
-            <h1 class="hero-text syne font-extrabold uppercase opacity-0">
+        <div class="text-center px-6">
+            <h1 class="hero-text text-[13vw] font-extrabold syne uppercase leading-[0.9] opacity-0">
                 Creative<br><span class="gradient-text">Oridra</span>
             </h1>
-            <p class="hero-sub text-gray-400 font-semibold opacity-0 uppercase">
-                Graphic Designer & Web Developer
-            </p>
+            <p class="hero-sub text-gray-400 mt-6 tracking-[0.3em] text-[10px] opacity-0 uppercase">Graphic Designer & Developer</p>
         </div>
     </section>
 
-    <section id="work" class="py-20 bg-black px-6">
-        <div class="max-w-lg mx-auto">
-            <h2 class="text-3xl font-bold syne mb-10 text-center">Featured <span class="gradient-text">Work</span></h2>
-            
-            <div class="work-card bg-zinc-900/50 rounded-3xl overflow-hidden border border-white/10">
-                <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <h3 class="text-xl font-bold syne mb-6">Minimalist Branding</h3>
-                    <div class="flex items-center space-x-6 border-t border-white/5 pt-6">
-                        <button onclick="handleLike(this)" class="flex items-center space-x-2 text-xl active:scale-125 transition">
-                            <span>❤️</span> <span class="like-count text-sm text-gray-400">45</span>
+    <section id="about" class="py-20 px-6">
+        <h2 class="text-4xl font-extrabold syne mb-6">Creative <span class="gradient-text">Mind.</span></h2>
+        <p class="text-gray-400 text-lg leading-relaxed mb-8">
+            Oridra Gosh – Crafting visually stunning designs and functional digital solutions with a blend of creativity and code.
+        </p>
+        <div class="border border-white/10 p-2 rounded-3xl bg-zinc-900/30">
+            <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800" class="rounded-2xl w-full grayscale" alt="Portfolio Image">
+        </div>
+    </section>
+
+    <section id="work" class="py-20 bg-zinc-950 px-6">
+        <h2 class="text-4xl font-extrabold syne mb-10 text-center">Featured <span class="gradient-text">Work</span></h2>
+        
+        <div class="work-card bg-zinc-900 rounded-3xl overflow-hidden border border-white/5">
+            <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800" class="w-full h-56 object-cover">
+            <div class="p-6">
+                <h3 class="text-xl font-bold syne mb-4">Minimalist Branding</h3>
+                <div class="flex items-center justify-between border-t border-white/10 pt-4">
+                    <div class="flex space-x-5">
+                        <button onclick="handleLike(this)" class="flex items-center gap-1">
+                            <span class="heart-icon">🤍</span> <span id="like-count" class="text-xs">24</span>
                         </button>
-                        <button onclick="openComments()" class="flex items-center space-x-2 text-xl active:opacity-50 transition">
-                            <span>💬</span> <span class="text-sm text-gray-400">12</span>
+                        <button onclick="openComments()" class="flex items-center gap-1">
+                            💬 <span id="comment-count" class="text-xs">0</span>
                         </button>
+                    </div>
+                    <div class="flex">
+                        <span onclick="animateRate(this)" class="star-btn px-0.5 text-xl">★</span>
+                        <span onclick="animateRate(this)" class="star-btn px-0.5 text-xl">★</span>
+                        <span onclick="animateRate(this)" class="star-btn px-0.5 text-xl">★</span>
+                        <span onclick="animateRate(this)" class="star-btn px-0.5 text-xl">★</span>
+                        <span onclick="animateRate(this)" class="star-btn px-0.5 text-xl">★</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <section class="py-16 px-6 bg-black border-t border-white/5">
+        <h2 class="syne text-2xl mb-6 text-pink-500">Inbox <span class="text-white text-sm block opacity-50 font-normal">Recent Comments</span></h2>
+        <div id="admin-comments-list" class="space-y-4">
+            <p class="text-gray-600 italic text-sm">Waiting for feedback...</p>
+        </div>
+    </section>
+
     <section id="contact" class="py-20 px-6 text-center">
-        <h2 class="text-3xl font-bold syne mb-10">Get In <span class="gradient-text">Touch.</span></h2>
-        <form action="https://formspree.io/f/xvzoblwp" method="POST" class="space-y-4 max-w-lg mx-auto">
-           <input type="text" name="name" placeholder="Name" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl text-white outline-none">
-           <input type="email" name="email" placeholder="Email" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl text-white outline-none">
-           <textarea name="message" placeholder="Project details" rows="4" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl text-white outline-none"></textarea>
-           <button class="w-full gradient-btn py-4 rounded-xl font-bold text-white uppercase tracking-widest">Send Inquiry</button>
+        <h2 class="text-4xl font-extrabold syne mb-8">Get In <span class="gradient-text">Touch.</span></h2>
+        <form action="https://formspree.io/f/xvzoblwp" method="POST" class="space-y-4">
+           <input type="text" name="name" placeholder="Full Name" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl outline-none focus:border-pink-500 text-white">
+           <input type="email" name="email" placeholder="Email" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl outline-none focus:border-pink-500 text-white">
+           <textarea name="message" placeholder="Project details..." rows="4" required class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl outline-none focus:border-pink-500 text-white"></textarea>
+           <button class="w-full gradient-btn py-4 rounded-xl font-bold syne uppercase tracking-widest text-white">Send Message</button>
         </form>
+
+        <div class="mt-12 flex justify-center gap-6 opacity-40 text-[10px] font-bold tracking-tighter">
+            <a href="https://www.facebook.com/oridra.gosh">FACEBOOK</a>
+            <a href="https://www.instagram.com/oridra_gosh/">INSTAGRAM</a>
+            <a href="https://t.me/Oridragosh">TELEGRAM</a>
+        </div>
     </section>
 
     <script>
-        function handleLike(btn) {
-            let span = btn.querySelector('.like-count');
-            span.innerText = parseInt(span.innerText) + 1;
-            btn.classList.add('text-pink-500');
-            gsap.fromTo(btn.querySelector('span'), {scale: 0.8}, {scale: 1.3, duration: 0.2, yoyo: true, repeat: 1});
+        // --- Logic & Data ---
+        let likes = 24;
+        let liked = false;
+        let comments = JSON.parse(localStorage.getItem('portfolio_comments')) || [];
+
+        function updateUI() {
+            document.getElementById('like-count').innerText = likes;
+            document.getElementById('comment-count').innerText = comments.length;
+            renderAdminComments();
         }
 
+        // --- Animations ---
+        window.addEventListener('DOMContentLoaded', () => {
+            gsap.to(".hero-text", { opacity: 1, y: -10, duration: 1, ease: "power2.out" });
+            gsap.to(".hero-sub", { opacity: 1, duration: 1, delay: 0.4 });
+            
+            // Subtle Orb movement for mobile (lightweight)
+            gsap.to(".orb-1", { x: 20, y: 30, duration: 8, repeat: -1, yoyo: true, ease: "sine.inOut" });
+            gsap.to(".orb-2", { x: -30, y: -20, duration: 10, repeat: -1, yoyo: true, ease: "sine.inOut" });
+            
+            updateUI();
+        });
+
+        // --- Like & Rate ---
+        function handleLike(el) {
+            const icon = el.querySelector('.heart-icon');
+            if (!liked) { likes++; liked = true; icon.innerText = "❤️"; } 
+            else { likes--; liked = false; icon.innerText = "🤍"; }
+            gsap.fromTo(el, { scale: 0.8 }, { scale: 1.2, duration: 0.2, yoyo: true, repeat: 1 });
+            updateUI();
+        }
+
+        function animateRate(star) {
+            let siblings = Array.from(star.parentElement.children);
+            let idx = siblings.indexOf(star);
+            siblings.forEach((s, i) => {
+                if(i <= idx) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+            gsap.from(star, { scale: 1.5, duration: 0.2 });
+        }
+
+        // --- Comment Modal Logic ---
         function openComments() {
-            document.getElementById('commentPanel').classList.add('open');
-            document.getElementById('overlay').style.display = 'block';
-            document.body.style.overflow = 'hidden';
+            const modal = document.getElementById('commentModal');
+            modal.style.display = 'flex';
+            gsap.to(modal, { opacity: 1, duration: 0.3 });
         }
 
         function closeComments() {
-            document.getElementById('commentPanel').classList.remove('open');
-            document.getElementById('overlay').style.display = 'none';
-            document.body.style.overflow = 'auto';
+            const modal = document.getElementById('commentModal');
+            gsap.to(modal, { opacity: 0, duration: 0.2, onComplete: () => modal.style.display = 'none' });
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            gsap.to(".hero-text", { opacity: 1, y: 0, duration: 1, ease: "power3.out" });
-            gsap.to(".hero-sub", { opacity: 1, duration: 1, delay: 0.5 });
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('show');
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.work-card').forEach(card => observer.observe(card));
-        });
+        function submitComment() {
+            const name = document.getElementById('commenterName').value;
+            const text = document.getElementById('commentText').value;
+            if(name && text) {
+                comments.push({ name, text, date: new Date().toLocaleTimeString() });
+                localStorage.setItem('portfolio_comments', JSON.stringify(comments));
+                document.getElementById('commenterName').value = '';
+                document.getElementById('commentText').value = '';
+                closeComments();
+                updateUI();
+            }
+        }
+
+        function renderAdminComments() {
+            const list = document.getElementById('admin-comments-list');
+            if (comments.length === 0) return;
+            list.innerHTML = comments.slice().reverse().map(c => `
+                <div class="bg-zinc-900/50 p-4 rounded-2xl border border-white/5">
+                    <div class="flex justify-between mb-1">
+                        <span class="font-bold text-pink-500 text-sm">${c.name}</span>
+                        <span class="text-[10px] text-gray-500">${c.date}</span>
+                    </div>
+                    <p class="text-gray-400 text-xs">${c.text}</p>
+                </div>
+            `).join('');
+        }
+
+        // --- Scroll Observer ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('show');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.work-card').forEach(card => observer.observe(card));
     </script>
 </body>
 </html>
