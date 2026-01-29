@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
         body { background-color: #050505; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
@@ -62,7 +62,7 @@
         .star-btn.active { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
 
         /* Enhanced About Page Styles */
-        #detailsPage {
+        #detailsPage, #poemPage {
             display: none;
             position: fixed;
             inset: 0;
@@ -132,7 +132,16 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #ff00cc; border-radius: 10px; }
 
-        /* Privacy & Support Link Styles */
+        /* Writing Section Typography Extensions */
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+            color: transparent;
+        }
+        .poem-line {
+            overflow: hidden;
+            display: block;
+            line-height: 1.2;
+        }
         .footer-link {
             color: rgba(255,255,255,0.3);
             transition: all 0.3s ease;
@@ -145,6 +154,25 @@
     </style>
 </head>
 <body>
+
+    <div id="poemPage" class="flex flex-col items-center justify-center p-6">
+        <div class="absolute top-10 right-10">
+            <button onclick="closePoem()" class="close-btn-circle group">
+                <span class="text-3xl group-hover:text-white text-pink-500">&times;</span>
+            </button>
+        </div>
+        <div class="max-w-4xl w-full text-center">
+            <h2 id="poemTitle" class="syne text-6xl md:text-9xl font-black mb-12 gradient-text opacity-0">Hidden Love</h2>
+            <div id="poemContent" class="space-y-4 text-3xl md:text-5xl font-light text-gray-200 leading-tight italic syne">
+                </div>
+            <div id="poemSignature" class="mt-16 opacity-0">
+                <div class="h-[1px] w-24 bg-pink-500 mx-auto mb-6"></div>
+                <p class="syne font-black tracking-[0.5em] text-sm uppercase">Oridra Gosh</p>
+                <p class="text-[10px] text-gray-500 tracking-widest uppercase mt-2">Original Composition</p>
+            </div>
+            <div class="h-1 w-0 bg-pink-500 mx-auto mt-10" id="poemFooter"></div>
+        </div>
+    </div>
 
     <div id="detailsPage" class="flex-col">
         <div class="container mx-auto px-6 py-20 relative">
@@ -226,23 +254,12 @@
         </div>
     </div>
 
-    <div id="commentModal">
-        <div class="modal-content">
-            <h3 class="syne text-2xl mb-4">Leave a <span class="gradient-text">Comment</span></h3>
-            <input type="text" id="commenterName" placeholder="Your Name" class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl mb-4 outline-none focus:border-pink-500">
-            <textarea id="commentText" placeholder="Write something..." rows="4" class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl mb-4 outline-none focus:border-pink-500"></textarea>
-            <div class="flex gap-4">
-                <button onclick="submitComment()" class="flex-1 gradient-btn py-3 rounded-xl font-bold uppercase tracking-wider">Post</button>
-                <button onclick="closeComments()" class="flex-1 bg-zinc-800 py-3 rounded-xl font-bold uppercase tracking-wider">Cancel</button>
-            </div>
-        </div>
-    </div>
-
     <nav class="fixed top-0 w-full z-50 py-6 px-10 flex justify-between items-center border-b border-white/10">
         <div class="text-2xl font-extrabold syne tracking-tighter">ORIDRA<span class="text-pink-500">.</span></div>
         <div class="hidden md:flex space-x-10 text-xs font-bold tracking-widest uppercase">
             <a href="#home" class="nav-link">HOME</a>
             <span onclick="openDetails()" class="nav-link">ABOUT ME</span>
+            <a href="#writing" class="nav-link">WRITING</a>
             <a href="#work" class="nav-link">MY WORK</a>
             <a href="#contact" class="nav-link text-pink-500">CONTACT ME</a>
         </div>
@@ -277,6 +294,62 @@
         </div>
         <div class="md:w-1/2 border border-white/10 p-4 rounded-3xl bg-zinc-900/50">
             <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800" class="rounded-2xl grayscale hover:grayscale-0 transition duration-1000 w-full" alt="Design">
+        </div>
+    </section>
+
+    <section id="writing" class="py-32 px-10 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-baseline mb-24">
+            <h2 class="text-7xl md:text-9xl font-black syne uppercase tracking-tighter leading-none italic text-stroke hover:text-white transition-all duration-700 select-none">
+                Lyrical<br><span class="gradient-text not-italic">Intent.</span>
+            </h2>
+            <div class="text-right mt-6">
+                <p class="text-pink-500 font-black tracking-[0.5em] uppercase text-xs">Authored by</p>
+                <p class="text-white font-bold uppercase text-lg tracking-tighter">Oridra Gosh</p>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-12">
+            <div onclick="openPoem()" class="lg:col-span-8 glass-card p-12 md:p-20 rounded-[40px] cursor-pointer group relative overflow-hidden transition-all duration-700 border-white/5 hover:border-pink-500/40">
+                <div class="relative z-10">
+                    <div class="flex items-center gap-6 mb-12">
+                        <span class="text-pink-500 font-black syne text-xl">01/</span>
+                        <span class="h-[1px] w-20 bg-zinc-800 group-hover:w-32 group-hover:bg-pink-500 transition-all duration-700"></span>
+                        <span class="text-gray-500 text-[10px] font-black uppercase tracking-[0.4em]">Personal Verse</span>
+                    </div>
+
+                    <h3 class="syne text-6xl md:text-8xl font-extrabold mb-10 leading-none group-hover:skew-x-2 transition-transform duration-700">
+                        HIDDEN<br>LOVE<span class="text-pink-500">.</span>
+                    </h3>
+                    
+                    <div class="max-w-xl">
+                        <p class="text-gray-400 italic text-2xl md:text-4xl leading-tight syne group-hover:text-white transition-colors duration-500">
+                            "Different faith, yet you are mine, In my eyes, you always shine..."
+                        </p>
+                    </div>
+
+                    <div class="mt-20 flex items-center gap-8">
+                        <div class="w-20 h-20 rounded-full border border-white/10 flex items-center justify-center group-hover:border-pink-500 group-hover:bg-pink-500 transition-all duration-500">
+                            <span class="text-3xl group-hover:translate-x-2 transition-transform duration-500">→</span>
+                        </div>
+                        <span class="text-[10px] font-black tracking-[0.5em] uppercase text-pink-500">Open Manuscript</span>
+                    </div>
+                </div>
+                <div class="absolute -bottom-10 -right-10 text-[15rem] font-black syne text-white/[0.02] pointer-events-none group-hover:text-pink-500/[0.05] transition-colors duration-1000">
+                    SOUL
+                </div>
+            </div>
+
+            <div class="lg:col-span-4 flex flex-col justify-end">
+                <div class="space-y-8 border-l border-white/5 pl-8">
+                    <p class="syne font-bold text-2xl italic leading-snug">
+                        "The <span class="text-pink-500">words</span> we never speak are the ones that define us."
+                    </p>
+                    <div class="h-1 w-12 bg-pink-500"></div>
+                    <p class="text-gray-500 text-xs font-medium uppercase tracking-widest leading-loose">
+                        Oridra Gosh explores the duality of silence and expression, weaving digital aesthetics with classical poetic structures.
+                    </p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -338,20 +411,94 @@
 
     <footer class="py-12 border-t border-white/5 bg-black flex flex-col items-center">
         <div class="flex items-center gap-6">
-            <a href="privacy.html" class="footer-link text-[10px] font-bold tracking-[0.3em] uppercase">
-                Privacy Policy
-            </a>
+            <a href="privacy.html" class="footer-link text-[10px] font-bold tracking-[0.3em] uppercase">Privacy Policy</a>
             <span class="text-zinc-800 text-[10px]">|</span>
-            <a href="support.html" class="footer-link text-[10px] font-bold tracking-[0.3em] uppercase">
-                Support
-            </a>
+            <a href="support.html" class="footer-link text-[10px] font-bold tracking-[0.3em] uppercase">Support</a>
         </div>
-        <div class="mt-4 text-zinc-700 text-[9px] tracking-widest uppercase">
-            &copy; 2026 Oridra Gosh
-        </div>
+        <div class="mt-4 text-zinc-700 text-[9px] tracking-widest uppercase">&copy; 2026 Oridra Gosh</div>
     </footer>
 
+    <div id="commentModal">
+        <div class="modal-content">
+            <h3 class="syne text-2xl mb-4">Leave a <span class="gradient-text">Comment</span></h3>
+            <input type="text" id="commenterName" placeholder="Your Name" class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl mb-4 outline-none focus:border-pink-500">
+            <textarea id="commentText" placeholder="Write something..." rows="4" class="w-full bg-zinc-900 border border-white/10 p-4 rounded-xl mb-4 outline-none focus:border-pink-500"></textarea>
+            <div class="flex gap-4">
+                <button onclick="submitComment()" class="flex-1 gradient-btn py-3 rounded-xl font-bold uppercase tracking-wider">Post</button>
+                <button onclick="closeComments()" class="flex-1 bg-zinc-800 py-3 rounded-xl font-bold uppercase tracking-wider">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // --- POETRY PAGE LOGIC ---
+        const poemLines = [
+            "Different faith, yet you are mine,",
+            "In my eyes, you always shine.",
+            "Like pure gold that never fades,",
+            "My love for you in silence stays.",
+            "I cannot say, I keep it near,",
+            "Still my heart beats only here."
+        ];
+
+        function openPoem() {
+            const page = document.getElementById('poemPage');
+            const content = document.getElementById('poemContent');
+            content.innerHTML = ''; 
+            
+            document.body.style.overflow = 'hidden';
+            gsap.set(page, { display: 'flex', opacity: 0, scale: 1.1 });
+            
+            // Background Entrance
+            gsap.to(page, { opacity: 1, scale: 1, duration: 1, ease: "expo.out" });
+
+            // Title Animation: Rise and Skew
+            gsap.fromTo("#poemTitle", 
+                { opacity: 0, y: 150, skewX: -20 }, 
+                { opacity: 1, y: 0, skewX: 0, duration: 1.5, delay: 0.3, ease: "expo.out" }
+            );
+
+            // Staggered Line Animation
+            poemLines.forEach((line, i) => {
+                const p = document.createElement('p');
+                p.className = "poem-line opacity-0";
+                p.innerHTML = `<span class="inline-block transform translate-y-full">${line}</span>`;
+                content.appendChild(p);
+
+                const span = p.querySelector('span');
+                gsap.to(p, { opacity: 1, duration: 0.5, delay: 0.8 + (i * 0.2) });
+                gsap.to(span, {
+                    y: 0,
+                    duration: 1.2,
+                    delay: 0.8 + (i * 0.2),
+                    ease: "power4.out"
+                });
+            });
+
+            // Signature Reveal
+            gsap.fromTo("#poemSignature", 
+                { opacity: 0, y: 50 }, 
+                { opacity: 1, y: 0, duration: 1.5, delay: 2.2, ease: "power4.out" }
+            );
+
+            gsap.to("#poemFooter", { width: '250px', duration: 1.5, delay: 2.5, ease: "expo.inOut" });
+        }
+
+        function closePoem() {
+            gsap.to("#poemPage", {
+                opacity: 0,
+                duration: 0.6,
+                ease: "power2.in",
+                onComplete: () => {
+                    document.getElementById('poemPage').style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    gsap.set("#poemTitle", { opacity: 0, y: 0 });
+                    gsap.set("#poemFooter", { width: 0 });
+                    gsap.set("#poemSignature", { opacity: 0 });
+                }
+            });
+        }
+
         // --- UPDATED DETAILS PAGE LOGIC ---
         function openDetails() {
             const details = document.getElementById('detailsPage');
